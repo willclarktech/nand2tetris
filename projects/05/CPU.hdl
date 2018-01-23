@@ -40,4 +40,52 @@ CHIP CPU {
 
     PARTS:
     // Put your code here:
+		Not(in=instruction[15], out=AInstruction);
+		Not(in=AInstruction, out=CInstruction);
+		And(a=CInstruction, b=instruction[3], out=writeM);
+
+		Mux16(a=ALUOut, b=instruction, sel=AInstruction, out=AMuxOut);
+
+		And(a=CInstruction, b=instruction[5], out=CInstructionALoad);
+		Or(a=AInstruction, b=CInstructionALoad, out=ALoad);
+		ARegister(in=AMuxOut, load=ALoad, out=AOut, out[0..14]=addressM);
+
+		And(a=CInstruction, b=instruction[4], out=DLoad);
+		DRegister(in=ALUOut, load=DLoad, out=DOut);
+
+		And(a=CInstruction, b=instruction[12], out=UseM);
+		Mux16(a=AOut, b=inM, sel=UseM, out=ALUMuxOut);
+
+		And(a=CInstruction, b=instruction[11], out=ZX);
+		And(a=CInstruction, b=instruction[10], out=NX);
+		And(a=CInstruction, b=instruction[9], out=ZY);
+		And(a=CInstruction, b=instruction[8], out=NY);
+		And(a=CInstruction, b=instruction[7], out=F);
+		And(a=CInstruction, b=instruction[6], out=NO);
+		ALU(
+			x=DOut,
+			y=ALUMuxOut,
+			zx=ZX,
+			nx=NX,
+			zy=ZY,
+			ny=NY,
+			f=F,
+			no=NO,
+
+			zr=ALUZero,
+			ng=ALUNegative,
+			out=ALUOut,
+			out=outM
+		);
+
+		Not(in=ALUZero, out=ALUNotZero);
+		Not(in=ALUNegative, out=ALUNotNegative);
+		And(a=ALUNotZero, b=ALUNotNegative, out=ALUPositive);
+		And(a=instruction[0], b=ALUPositive, out=JGT);
+		And(a=instruction[1], b=ALUZero, out=JEQ);
+		And(a=instruction[2], b=ALUNegative, out=JLT);
+		Or(a=JGT, b=JLT, out=JNE);
+		Or(a=JEQ, b=JNE, out=JMP);
+		And(a=CInstruction, b=JMP, out=CInstructionJMP);
+		PC(in=AOut, load=CInstructionJMP, inc=true, reset=reset, out[0..14]=pc);
 }
