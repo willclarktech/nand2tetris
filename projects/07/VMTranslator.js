@@ -4,6 +4,12 @@ const path = require('path')
 const readline = require('readline')
 const stream = require('stream')
 
+const inputFilePath = process.argv[2]
+const ext = path.extname(inputFilePath)
+const basePath = inputFilePath.slice(0, -ext.length)
+const baseName = path.basename(basePath)
+const outputFilePath = basePath + '.asm'
+
 const stripComments = line => line.split('//', 1)[0]
 
 function tidy(line, encoding, callback) {
@@ -36,8 +42,12 @@ const BANKS = {
 	temp: 5,
 }
 
+const getBankAddress = (bank, offset) => bank === 'static'
+	? `${baseName}.${offset}`
+	: BANKS[bank]
+
 const push = (bank, offset) => {
-	const bankAddress = BANKS[bank]
+	const bankAddress = getBankAddress(bank, offset)
 
 	const retrieveValue = bank === 'constant'
 		? `
@@ -64,7 +74,7 @@ const push = (bank, offset) => {
 }
 
 const pop = (bank, offset) => {
-	const bankAddress = BANKS[bank]
+	const bankAddress = getBankAddress(bank, offset)
 
 	const retrieveValue = `
 		@SP
@@ -270,10 +280,6 @@ const connectReadlineToStream = (rl, str) => {
 }
 
 const main = () => {
-	const inputFilePath = process.argv[2]
-	const ext = path.extname(inputFilePath)
-	const basePath = inputFilePath.slice(0, -ext.length)
-	const outputFilePath = basePath + '.asm'
 	const readStream = fs.createReadStream(inputFilePath, 'utf8')
 	const writeStream = fs.createWriteStream(outputFilePath, 'utf8')
 	const rl = readline.createInterface({ input: readStream })
