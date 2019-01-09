@@ -30,6 +30,7 @@ const scriptEnd = `
 const BANKS = {
 	local: 'LCL',
 	argument: 'ARG',
+	pointer: 'THIS',
 	this: 'THIS',
 	that: 'THAT',
 	temp: 5,
@@ -45,7 +46,8 @@ const push = (bank, offset) => {
 `
 		: `
 		@${bankAddress}
-		D=M
+		${['THIS', 'THAT'].includes(bank) ? 'A=M' : ''}
+		${bank === 'pointer' ? 'D=A' : 'D=M'}
 		@${offset}
 		A=A+D
 		D=M
@@ -76,7 +78,7 @@ const pop = (bank, offset) => {
 		M=D
 
 		@${bankAddress}
-		D=M
+		${bank === 'pointer' ? 'D=A' : 'D=M'}
 
 		@${offset}
 		D=A+D
