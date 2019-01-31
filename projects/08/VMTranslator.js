@@ -4,293 +4,85 @@ const path = require('path')
 const readline = require('readline')
 const stream = require('stream')
 
-const inputFilePath = process.argv[2]
-const ext = path.extname(inputFilePath)
-const basePath = inputFilePath.slice(0, -ext.length)
-const baseName = path.basename(basePath)
-const outputFilePath = basePath + '.asm'
+const arithmeticLogicCommands = require('./lib/arithmetic-logic')
+const memorySegmentCommands = require('./lib/memory-segment')
+const branchingCommands = require('./lib/branching')
+const functionCommands = require('./lib/function')
+const boilerplate = require('./lib/boilerplate')
 
-const stripComments = line => line.split('//', 1)[0]
+const {
+	CHANGE_FILE_SIGNAL,
+	connectReadlineToStream,
+	tidy,
+} = require('./lib/utils')
 
-function tidy(line, encoding, callback) {
-	const stringLine = line.toString()
-	if (process.env.DEBUG) console.info('DEBUG:', stringLine)
+const inputPath = process.argv[2]
+const inputIsFile = fs.lstatSync(inputPath).isFile()
+const inputFilePaths = inputIsFile
+	? [inputPath]
+	: fs.readdirSync(inputPath)
+		.filter(p => p.endsWith('.vm'))
+		.map(p => path.normalize(`${inputPath}/${p}`))
+const inputFileNames = inputFilePaths
+	.map(p => path.parse(p).name)
 
-	const stripped = stripComments(stringLine)
-	const trimmed = stripped.trim()
-	const data = trimmed
-		? `${trimmed}\n`
-		: null
-	return callback(null, data)
-}
-
-const scriptEnd = `
-// loop to end
-
-	(LOOP)
-
-		@LOOP
-		0;JMP
-`
-
-const BANKS = {
-	local: 'LCL',
-	argument: 'ARG',
-	pointer: 'THIS',
-	this: 'THIS',
-	that: 'THAT',
-	temp: 5,
-}
-
-const getBankAddress = (bank, offset) => bank === 'static'
-	? `${baseName}.${offset}`
-	: BANKS[bank]
-
-const push = (bank, offset) => {
-	const bankAddress = getBankAddress(bank, offset)
-
-	const retrieveValue = bank === 'constant'
-		? `
-		@${offset}
-		D=A
-`
-		: `
-		@${bankAddress}
-		${['THIS', 'THAT'].includes(bank) ? 'A=M' : ''}
-		${bank === 'pointer' ? 'D=A' : 'D=M'}
-		@${offset}
-		A=A+D
-		D=M
-`
-
-	const storeValue = `
-		@SP
-		M=M+1
-		A=M-1
-		M=D
-`
-
-	return `${retrieveValue}${storeValue}`
-}
-
-const pop = (bank, offset) => {
-	const bankAddress = getBankAddress(bank, offset)
-
-	const retrieveValue = `
-		@SP
-		M=M-1
-		A=M
-		D=M
-`
-
-	const storeValue = `
-		@value
-		M=D
-
-		@${bankAddress}
-		${bank === 'pointer' ? 'D=A' : 'D=M'}
-
-		@${offset}
-		D=A+D
-
-		@location
-		M=D
-
-		@value
-		D=M
-
-		@location
-		A=M
-		M=D
-`
-
-	return `${retrieveValue}${storeValue}`
-}
-
-const add = () => `
-		@SP
-		M=M-1
-
-		A=M
-		D=M
-		A=A-1
-		M=M+D
-`
-
-const sub = () => `
-		@SP
-		M=M-1
-
-		A=M
-		D=M
-		A=A-1
-		M=M-D
-`
-
-let i = 0
-
-const eq = () => {
-	i++
-	return `
-		@SP
-		M=M-1
-
-		A=M
-		D=M
-		A=A-1
-		D=D-M
-
-		@SET_TRUE_${i}
-		D;JEQ
-
-		@SP
-		A=M-1
-		M=0
-
-		@CONTINUE_${i}
-		0;JEQ
-
-	(SET_TRUE_${i})
-		@SP
-		A=M-1
-		M=-1
-
-	(CONTINUE_${i})
-`
-}
-
-const lt = () => {
-	i++
-	return `
-		@SP
-		M=M-1
-
-		A=M
-		D=M
-		A=A-1
-		D=M-D
-
-		@SET_TRUE_${i}
-		D;JLT
-
-		@SP
-		A=M-1
-		M=0
-
-		@CONTINUE_${i}
-		0;JEQ
-
-	(SET_TRUE_${i})
-		@SP
-		A=M-1
-		M=-1
-
-	(CONTINUE_${i})
-`
-}
-
-const gt = () => {
-	i++
-	return `
-		@SP
-		M=M-1
-
-		A=M
-		D=M
-		A=A-1
-		D=M-D
-
-		@SET_TRUE_${i}
-		D;JGT
-
-		@SP
-		A=M-1
-		M=0
-
-		@CONTINUE_${i}
-		0;JEQ
-
-	(SET_TRUE_${i})
-		@SP
-		A=M-1
-		M=-1
-
-	(CONTINUE_${i})
-`
-}
-
-const neg = () => `
-		@SP
-		A=M-1
-		M=-M
-`
-
-const and = () => `
-		@SP
-		M=M-1
-
-		A=M
-		D=M
-		A=A-1
-		M=M&D
-`
-
-const or = () => `
-		@SP
-		M=M-1
-
-		A=M
-		D=M
-		A=A-1
-		M=M|D
-`
-
-const not = () => `
-		@SP
-		A=M-1
-		M=!M
-`
-
+const { name, ext } = path.parse(inputPath)
+const basePath = path.normalize(
+	inputIsFile
+		? inputPath.slice(0, -ext.length)
+		: `${inputPath}/${name}`
+)
+const outputFilePath = `${basePath}.asm`
 
 const translators = {
-	push,
-	pop,
-	add,
-	sub,
-	eq,
-	lt,
-	gt,
-	neg,
-	and,
-	or,
-	not,
+	// arithmetic/logical commands
+	...arithmeticLogicCommands,
+	// memory segment commands
+	...memorySegmentCommands,
+	// branching commands
+	...branchingCommands,
+	'if-goto': branchingCommands.ifGoto,
+	// function commands
+	'function': functionCommands.func,
+	'call': functionCommands.cll,
+	'return': functionCommands.ret,
 }
 
 function translate(line, encoding, callback) {
+	const prefix = this.fileName ? '' : `// New file: ${inputFileNames[0]}.vm\n\n`
+	if (!this.fileName) {
+		this.fileName = inputFileNames[0]
+	}
 	const lineString = line.toString()
-	const [command, bank, offset] = lineString.split(' ').map(str => str.trim())
-	const translation = translators[command](bank, offset)
-	const commented = `// ${lineString}${translation}\n\n`
+	const changeFileMatch = lineString.match(CHANGE_FILE_SIGNAL)
+	if (changeFileMatch) {
+		this.fileName = changeFileMatch[1]
+		return callback(null, `// New file: ${this.fileName}.vm\n\n`)
+	}
+
+	const [command, ...args] = lineString.split(' ').map(str => str.trim())
+	const translation = translators[command]({
+		name: this.fileName,
+		args,
+	})
+	const commented = `${prefix}// ${lineString}${translation}\n\n`
 	return callback(null, commented)
 }
 
-const connectReadlineToStream = (rl, str) => {
-	rl.on('line', line => str.write(line))
-	rl.on('close', () => str.end())
-}
-
 const main = () => {
-	const readStream = fs.createReadStream(inputFilePath, 'utf8')
-	const writeStream = fs.createWriteStream(outputFilePath, 'utf8')
-	const rl = readline.createInterface({ input: readStream })
+	if (!inputFilePaths.length) {
+		console.info('Could not find any .vm files at that location')
+		return
+	}
 
+	const writeStream = fs.createWriteStream(outputFilePath, 'utf8')
 	const transforms = [
 		tidy,
 		translate,
 	]
 	const transformStreams = transforms.map(transform => new stream.Transform({ transform }))
 
-	const finishUp = () => fs.appendFile(outputFilePath, scriptEnd, () => console.info('Done :)'))
+	const finishUp = () => fs.appendFile(outputFilePath, boilerplate.scriptEnd, () => console.info('Done :)'))
 
 	transformStreams
 		.slice(1)
@@ -298,7 +90,29 @@ const main = () => {
 		.pipe(writeStream)
 		.on('finish', finishUp)
 
-	connectReadlineToStream(rl, transformStreams[0])
+	let ended = 0
+	const combined = new stream.PassThrough()
+	const readStream = inputFilePaths
+		.map(p => fs.createReadStream(p, 'utf8'))
+		.reduce((pt, s, i, a) => {
+			s.on('end', () => {
+				pt.write(`$$$${inputFileNames[i+1] || 'END'}$$$\n`)
+				if (a[i+1]) a[i+1].pipe(pt, { end: false })
+				return ++ended === inputFilePaths.length && pt.emit('end')
+			})
+			if (!i) pt.write(`$$$${inputFileNames[0]}$$$\n`) && s.pipe(pt, { end: false })
+			return pt
+		}, combined)
+	const rl = readline.createInterface({
+		crlfDelay: Infinity,
+		input: readStream,
+	})
+
+	const connectStreams = () => connectReadlineToStream(rl, transformStreams[0])
+	const processDir = () => writeStream.write(boilerplate.scriptStart, connectStreams)
+	const process = inputIsFile ? connectStreams : processDir
+
+	process()
 }
 
 main()
