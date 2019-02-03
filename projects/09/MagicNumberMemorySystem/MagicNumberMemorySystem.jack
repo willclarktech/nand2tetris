@@ -1,0 +1,74 @@
+// Represents a specific application of the magic number memory system
+class MagicNumberMemorySystem {
+	field String shape;
+	field int magic_number;
+	field String term;
+	field int term_length;
+	field String definition;
+	field int num_answers;
+	field int sides;
+	field String root_name;
+	field int result;
+
+	constructor MagicNumberMemorySystem new(String s, String t, String def, int n, int a) {
+		let shape = s;
+		let magic_number = n;
+		let term = t;
+		let term_length = String.length(term);
+		let definition = def;
+		let num_answers = a;
+		let sides = MagicNumberMath.countSides(shape);
+		let root_name = MagicNumberMath.getRootName(sides);
+		let result = MagicNumberMath.calculateResult(magic_number, term_length, num_answers, sides);
+		return this;
+	}
+
+	// Explains the process of the magic number memory system with the provided numbers
+	method void explain() {
+		do Output.printString("OK, your magic number is ");
+		do Output.printInt(magic_number);
+		do Output.printString(".");
+		do Output.println();
+
+		do Output.printString(term);
+		do Output.printString(" has ");
+		do Output.printInt(term_length);
+		do Output.printString(" letters, so we take the ");
+		do Output.printInt(term_length);
+		do Output.printString("th root of ");
+		do Output.printInt(magic_number);
+		do Output.printString(".");
+		do Output.println();
+
+		do Output.printString("We want ");
+		do Output.printInt(num_answers);
+		do Output.printString(" answer(s), so we square it ");
+		do Output.printInt(num_answers);
+		do Output.printString(" time(s).");
+		do Output.println();
+
+		do Output.printString("We know we're dealing with a ");
+		do Output.printString(shape);
+		do Output.printString(", which has ");
+		do Output.printInt(sides);
+		do Output.printString(" sides.");
+		do Output.println();
+
+		do Output.printString("So we take the ");
+		do Output.printString(root_name);
+		do Output.printString(" root of what we've just done.");
+		do Output.println();
+
+		do Output.printString("The result should be roughly ");
+		do Output.printInt(result);
+		do Output.printString(".");
+		do Output.println();
+
+		do Output.printString("Now just associate that number with the definition, ");
+		do Output.printString(definition);
+		do Output.printString(".");
+		do Output.println();
+
+		return;
+	}
+}

@@ -1,0 +1,392 @@
+function MagicNumberMath.strCompare 3
+push argument 0
+call String.length 1
+pop local 0
+push argument 1
+call String.length 1
+pop local 1
+push local 0
+push local 1
+eq
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push constant 0
+pop local 2
+label WHILE_EXP0
+push local 2
+push local 0
+lt
+not
+if-goto WHILE_END0
+push argument 0
+push local 2
+call String.charAt 2
+push argument 1
+push local 2
+call String.charAt 2
+eq
+not
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+return
+label IF_FALSE1
+push local 2
+push constant 1
+add
+pop local 2
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+not
+return
+function MagicNumberMath.isValidShape 0
+push argument 0
+push constant 6
+call String.new 1
+push constant 67
+call String.appendChar 2
+push constant 73
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 67
+call String.appendChar 2
+push constant 76
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+call MagicNumberMath.strCompare 2
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+not
+return
+label IF_FALSE0
+push argument 0
+push constant 8
+call String.new 1
+push constant 84
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 73
+call String.appendChar 2
+push constant 65
+call String.appendChar 2
+push constant 78
+call String.appendChar 2
+push constant 71
+call String.appendChar 2
+push constant 76
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+call MagicNumberMath.strCompare 2
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+not
+return
+label IF_FALSE1
+push argument 0
+push constant 6
+call String.new 1
+push constant 83
+call String.appendChar 2
+push constant 81
+call String.appendChar 2
+push constant 85
+call String.appendChar 2
+push constant 65
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+call MagicNumberMath.strCompare 2
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 0
+not
+return
+label IF_FALSE2
+push constant 0
+return
+function MagicNumberMath.countSides 0
+push argument 0
+push constant 6
+call String.new 1
+push constant 67
+call String.appendChar 2
+push constant 73
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 67
+call String.appendChar 2
+push constant 76
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+call MagicNumberMath.strCompare 2
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 1
+return
+label IF_FALSE0
+push argument 0
+push constant 8
+call String.new 1
+push constant 84
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 73
+call String.appendChar 2
+push constant 65
+call String.appendChar 2
+push constant 78
+call String.appendChar 2
+push constant 71
+call String.appendChar 2
+push constant 76
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+call MagicNumberMath.strCompare 2
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 3
+return
+label IF_FALSE1
+push argument 0
+push constant 6
+call String.new 1
+push constant 83
+call String.appendChar 2
+push constant 81
+call String.appendChar 2
+push constant 85
+call String.appendChar 2
+push constant 65
+call String.appendChar 2
+push constant 82
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+call MagicNumberMath.strCompare 2
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 4
+return
+label IF_FALSE2
+push constant 0
+return
+function MagicNumberMath.getRootName 0
+push argument 0
+push constant 1
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 5
+call String.new 1
+push constant 102
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 115
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+return
+label IF_FALSE0
+push argument 0
+push constant 3
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 4
+call String.new 1
+push constant 99
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 98
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+return
+label IF_FALSE1
+push argument 0
+push constant 4
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 6
+call String.new 1
+push constant 102
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 104
+call String.appendChar 2
+return
+label IF_FALSE2
+push constant 3
+call String.new 1
+push constant 110
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 104
+call String.appendChar 2
+return
+function MagicNumberMath.power 2
+push constant 1
+pop local 0
+push constant 0
+pop local 1
+label WHILE_EXP0
+push local 1
+push argument 1
+lt
+not
+if-goto WHILE_END0
+push local 0
+push argument 0
+call Math.multiply 2
+pop local 0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+push local 0
+return
+function MagicNumberMath.calculateRoot 6
+push constant 100
+pop local 0
+push constant 0
+pop local 1
+push constant 1
+pop local 2
+label WHILE_EXP0
+push local 1
+push local 0
+lt
+not
+if-goto WHILE_END0
+push local 2
+push argument 1
+call MagicNumberMath.power 2
+pop local 5
+push local 5
+push argument 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 2
+return
+label IF_FALSE0
+push local 5
+push argument 0
+gt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push local 2
+push constant 1
+sub
+pop local 4
+goto IF_END1
+label IF_FALSE1
+push local 2
+push constant 1
+add
+pop local 4
+label IF_END1
+push local 4
+push local 3
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push local 4
+return
+label IF_FALSE2
+push local 2
+pop local 3
+push local 4
+pop local 2
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+push local 2
+return
+function MagicNumberMath.squareNTimes 2
+push argument 0
+pop local 0
+push constant 0
+pop local 1
+label WHILE_EXP0
+push local 1
+push argument 1
+lt
+not
+if-goto WHILE_END0
+push local 0
+push local 0
+call Math.multiply 2
+pop local 0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+push local 0
+return
+function MagicNumberMath.calculateResult 1
+push argument 0
+push argument 1
+call MagicNumberMath.calculateRoot 2
+pop local 0
+push local 0
+push argument 2
+call MagicNumberMath.squareNTimes 2
+pop local 0
+push local 0
+push argument 3
+call MagicNumberMath.calculateRoot 2
+pop local 0
+push local 0
+return

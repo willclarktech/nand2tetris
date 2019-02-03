@@ -1,0 +1,43 @@
+// Implements the magic number memory system
+// Source: https://www.youtube.com/watch?v=LytLOuEv6xM&t=19s
+class Main {
+	function void main() {
+		var String shape;
+		var String term;
+		var String definition;
+		var int magic_number;
+		var int num_answers;
+		var MagicNumberMemorySystem system;
+		var String outcome;
+
+		do Output.printString("Welcome to the magic number memory system!");
+		do Output.println();
+		do Output.printString("Pick a geometry term to learn.");
+		do Output.println();
+
+		let shape = Keyboard.readLine("Which shape does this term concern? ");
+		while (~MagicNumberMath.isValidShape(shape)) {
+			do Output.printString("Must be CIRCLE, TRIANGLE or SQUARE.");
+			do Output.println();
+			let shape = Keyboard.readLine("Which shape does this term concern? ");
+		}
+
+		let term = Keyboard.readLine("Which term do you want to learn? ");
+		let definition = Keyboard.readLine("What is the definition? ");
+		let magic_number = Keyboard.readInt("What is your magic number? ");
+		let num_answers = Keyboard.readInt("How many answers do you want? ");
+
+		let system = MagicNumberMemorySystem.new(shape, term, definition, magic_number, num_answers);
+
+		do system.explain();
+
+		let outcome = Keyboard.readLine("Did you pass your exam? ");
+		while (~MagicNumberMath.strCompare(outcome, "YES")) {
+			let outcome = Keyboard.readLine("How about now? ");
+		}
+
+		do Output.printString("Congratulations! So glad the magic number memory system helped.");
+
+		return;
+	}
+}

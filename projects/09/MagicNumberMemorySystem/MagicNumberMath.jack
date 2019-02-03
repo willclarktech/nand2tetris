@@ -1,0 +1,143 @@
+// Library methods for magic number memory system
+class MagicNumberMath {
+	// Checks if two strings are equal
+	function boolean strCompare(String str, String cmp) {
+		var int strLen;
+		var int cmpLen;
+		var int i;
+
+		let strLen = String.length(str);
+		let cmpLen = String.length(cmp);
+		if (~(strLen = cmpLen)){
+			return false;
+		}
+
+		let i = 0;
+		while (i < strLen) {
+			if (~(str.charAt(i) = cmp.charAt(i))) {
+				return false;
+			}
+			let i = i + 1;
+		}
+		return true;
+	}
+
+	// Checks if the provided shape is currently supported
+	function boolean isValidShape(String shape) {
+		if (MagicNumberMath.strCompare(shape, "CIRCLE")) {
+			return true;
+		}
+		if (MagicNumberMath.strCompare(shape, "TRIANGLE")) {
+			return true;
+		}
+		if (MagicNumberMath.strCompare(shape, "SQUARE")) {
+			return true;
+		}
+		return false;
+	}
+
+	// Returns the number of sides for a supported shape
+	function int countSides(String shape) {
+		if (MagicNumberMath.strCompare(shape, "CIRCLE")) {
+			return 1;
+		}
+		if (MagicNumberMath.strCompare(shape, "TRIANGLE")) {
+			return 3;
+		}
+		if (MagicNumberMath.strCompare(shape, "SQUARE")) {
+			return 4;
+		}
+		return 0;
+	}
+
+	// Gets the English term for the nth root
+	function String getRootName(int sides) {
+		if (sides = 1) {
+			return "first";
+		}
+		if (sides = 3) {
+			return "cube";
+		}
+		if (sides = 4) {
+			return "fourth";
+		}
+		return "nth";
+	}
+
+	// Calculates the nth power of a number
+	function int power(int base, int order) {
+		var int result;
+		var int i;
+
+		let result = 1;
+		let i = 0;
+
+		while (i < order) {
+			let result = result * base;
+			let i = i + 1;
+		}
+		return result;
+	}
+
+	// Approximates the nth root of a number
+	function int calculateRoot(int base, int root) {
+		var int max_attempts;
+		var int i;
+		var int attempt;
+		var int previous_attempt;
+		var int next_attempt;
+		var int cmp;
+
+		let max_attempts = 100;
+		let i = 0;
+		let attempt = 1;
+
+		while (i < max_attempts) {
+			let cmp = MagicNumberMath.power(attempt, root);
+			if (cmp = base) {
+				return attempt;
+			}
+
+			if (cmp > base) {
+				let next_attempt = attempt - 1;
+			} else {
+				let next_attempt = attempt + 1;
+			}
+			if (next_attempt = previous_attempt) {
+				return next_attempt;
+			}
+
+			let previous_attempt = attempt;
+			let attempt = next_attempt;
+			let i = i + 1;
+		}
+
+		return attempt;
+	}
+
+	// Squares a number n times
+	function int squareNTimes(int base, int n) {
+		var int result;
+		var int i;
+
+		let result = base;
+		let i = 0;
+
+		while (i < n) {
+			let result = result * result;
+			let i = i + 1;
+		}
+		return result;
+	}
+
+	// Calculates an approximate result of applying the magic number memory system
+	function int calculateResult(int magic_number, int term_length, int num_answers, int sides) {
+		var int result;
+
+		let result = MagicNumberMath.calculateRoot(magic_number, term_length);
+		let result = MagicNumberMath.squareNTimes(result, num_answers);
+		let result = MagicNumberMath.calculateRoot(result, sides);
+
+		return result;
+	}
+}
