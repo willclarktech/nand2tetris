@@ -7,6 +7,7 @@ const tokenize = require('./lib/tokenize')
 const categorize = require('./lib/categorize')
 const parse = require('./lib/parse')
 const esc = require('./lib/esc')
+const symbolize = require('./lib/symbolize')
 const indent = require('./lib/indent')
 const combine = require('./lib/combine')
 
@@ -25,7 +26,7 @@ const processFile = async (inputFile) => {
 
 	const writeStream = fs.createWriteStream(outputFile)
 
-	;[tokenize, categorize, parse, esc, indent, combine]
+	;[tokenize, categorize, parse, esc, symbolize, indent, combine]
 		.map(transform => new stream.Transform({ transform, objectMode: true }))
 		.reduce((previous, next) => previous.pipe(next), readStream)
 		.pipe(writeStream)
