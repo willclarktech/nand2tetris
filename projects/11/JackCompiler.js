@@ -26,7 +26,15 @@ const processFile = async (inputFile) => {
 
 	const writeStream = fs.createWriteStream(outputFile)
 
-	;[tokenize, categorize, parse, esc, symbolize, indent, combine]
+	;[
+		tokenize,
+		categorize,
+		parse,
+		// esc,
+		symbolize,
+		// indent,
+		combine,
+	]
 		.map(transform => new stream.Transform({ transform, objectMode: true }))
 		.reduce((previous, next) => previous.pipe(next), readStream)
 		.pipe(writeStream)

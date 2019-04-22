@@ -1,12 +1,17 @@
-const RE_CLASS = /^<class>$/
-const RE_SUBROUTINE_DEC = /^<subroutineDec>$/
-const RE_IDENTIFIER_CATEGORY_DEFINITION = /^<keyword> (class|constructor|function|method|static|field|var) <\/keyword>$/
-const RE_IDENTIFIER = /^<identifier> (.+) <\/identifier>$/
-
-const RE_FULL_STOP = /^<symbol> \. <\/symbol>$/
-const RE_OPEN_PARENTHESIS = /^<symbol> \( <\/symbol>$/
-
+const NEST = 'nest'
+const SUBROUTINE_DEC = 'subroutineDec'
+const KEYWORD = 'keyword'
+const IDENTIFIER = 'identifier'
+const IDENTIFIER_CATEGORIES = ['class', 'constructor', 'function', 'method', 'static', 'field', 'var']
+const CLASS = 'class'
+const SUBROUTINE = 'subroutine'
 const SUBROUTINES = ["constructor", "function", "method"]
+
+const FULL_STOP = '.'
+const OPEN_PARENTHESIS = '('
+
+const DEFINED = 'defined'
+const USED = 'used'
 
 let j = 0;
 
@@ -17,34 +22,39 @@ function symbolize(chunk = [], encoding, callback) {
 
 	const symbolized = chunk.map((line, i, lines) => {
 		if (process.env.DEBUG) console.log(++j, line)
+		const { category, nesting, token } = line
 
-		if (RE_CLASS.test(line)) {
-			if (process.env.DEBUG) console.log('Resetting symbol table for class')
-			classTable = {}
-			// subroutineTable = {}
-		} else if (RE_SUBROUTINE_DEC.test(line)) {
-			if (process.env.DEBUG) console.log('Resetting symbol table for subroutine')
-			subroutineTable = {}
-		} else if (RE_IDENTIFIER_CATEGORY_DEFINITION.test(line)) {
-			const match = line.match(RE_IDENTIFIER_CATEGORY_DEFINITION)[1]
-			nextIdentifierCategory = SUBROUTINES.includes(match)
-				? 'subroutine'
-				: match
+		if (category === NEST) {
+			if (nesting === CLASS) {
+				if (process.env.DEBUG) console.log('Resetting symbol table for class')
+				classTable = {}
+			} else if (nesting === SUBROUTINE_DEC) {
+				if (process.env.DEBUG) console.log('Resetting symbol table for subroutine')
+				subroutineTable = {}
+			} else {
+				// throw new Error('Unknown nesting')
+			}
+		} else if (category === KEYWORD && IDENTIFIER_CATEGORIES.includes(token)) {
+			nextIdentifierCategory = SUBROUTINES.includes(token)
+				? SUBROUTINE
+				: token
 			if (process.env.DEBUG) console.log('Setting next identifier category:', nextIdentifierCategory)
-		} else if (RE_IDENTIFIER.test(line)) {
-			const definedOrUsed = nextIdentifierCategory ? "defined" : "used"
+		} else if (category === IDENTIFIER) {
+			const definedOrUsed = nextIdentifierCategory ? DEFINED : USED
 
-			if (RE_FULL_STOP.test(lines[i + 1])) {
-				nextIdentifierCategory = 'class'
-			} else if (RE_OPEN_PARENTHESIS.test(lines[i + 1])) {
-				nextIdentifierCategory = 'subroutine'
+			if (lines[i + 1].token === FULL_STOP) {
+				nextIdentifierCategory = CLASS
+			} else if (lines[i + 1].token === OPEN_PARENTHESIS) {
+				nextIdentifierCategory = SUBROUTINE
 			}
 
-			const tagWithoutIndex = `identifier:${definedOrUsed}:${nextIdentifierCategory}`
-			const tag = tagWithoutIndex
-
+			const identifierCategory = nextIdentifierCategory
 			nextIdentifierCategory = undefined
-			return line.replace(/identifier/g, tag)
+			return {
+				...line,
+				definedOrUsed,
+				identifierCategory,
+			}
 		}
 
 		return line
