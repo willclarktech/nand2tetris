@@ -1,7 +1,7 @@
 function combine(chunk = [], encoding, callback) {
 	const combined = `${
 		chunk
-			.map(({ category, token, nesting, definedOrUsed, identifierCategory, runningIndex }) => `category:${
+			.map(({ category, token, nesting, definedOrUsed, kind, type, runningIndex }) => `category:${
 				category
 			}${
 				token ? `,token:${token}` : ''
@@ -10,7 +10,9 @@ function combine(chunk = [], encoding, callback) {
 			}${
 				definedOrUsed ? `,definedOrUsed:${definedOrUsed}` : ''
 			}${
-				identifierCategory ? `,identifierCategory:${identifierCategory}` : ''
+				kind ? `,kind:${kind}` : ''
+			}${
+				type ? `,type:${type}` : ''
 			}${
 				runningIndex !== undefined ? `,runningIndex:${runningIndex}` : ''
 			}`)

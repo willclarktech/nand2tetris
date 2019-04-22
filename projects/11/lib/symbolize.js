@@ -2,7 +2,6 @@ const NEST = 'nest'
 const UNNEST = 'unnest'
 const CLASS = 'class'
 const SUBROUTINE_DEC = 'subroutineDec'
-const VAR_DEC = 'subroutineDec'
 const PARAMETER_LIST = 'parameterList'
 const KEYWORD = 'keyword'
 const IDENTIFIER = 'identifier'
@@ -22,6 +21,7 @@ const USED = 'used'
 const DEFINED = 'defined'
 
 const IDENTIFIER_KEYWORDS = [CLASS, CONSTRUCTOR, FUNCTION, METHOD, STATIC, FIELD, VAR]
+const TYPED_KEYWORDS = [CONSTRUCTOR, FUNCTION, METHOD, STATIC, FIELD, VAR]
 const SUBROUTINE_KEYWORDS = [CONSTRUCTOR, FUNCTION, METHOD]
 const INDEXED_IDENTIFIERS = [VAR, ARGUMENT, STATIC, FIELD]
 
@@ -31,6 +31,7 @@ function symbolize(chunk = [], encoding, callback) {
 	let classTable
 	let subroutineTable
 	let nextIdentifierCategory
+	let nextIdentifierType
 
 	const symbolized = chunk.map((line, i, lines) => {
 		if (process.env.DEBUG_SYMBOLIZED) console.log(++j, line)
@@ -62,6 +63,8 @@ function symbolize(chunk = [], encoding, callback) {
 				? SUBROUTINE
 				: token
 			if (process.env.DEBUG_SYMBOLIZED) console.log('Setting next identifier category:', nextIdentifierCategory)
+		} else if (TYPED_KEYWORDS.includes(lines[i - 1].token) || (nextIdentifierCategory === ARGUMENT && [FULL_STOP, OPEN_PARENTHESIS].includes(lines[i - 1].token))) {
+			nextIdentifierType = token
 		} else if (category === IDENTIFIER) {
 			const definedOrUsed = nextIdentifierCategory ? DEFINED : USED
 			let output = {
@@ -80,14 +83,19 @@ function symbolize(chunk = [], encoding, callback) {
 				case DEFINED:
 					let runningIndex
 					if (INDEXED_IDENTIFIERS.includes(nextIdentifierCategory)) {
+						const entry = {
+							name: token,
+							type: nextIdentifierType,
+							kind: nextIdentifierCategory,
+						}
 						switch(nextIdentifierCategory) {
 							case VAR:
 							case ARGUMENT:
-								runningIndex = subroutineTable[nextIdentifierCategory].push(token) - 1
+								runningIndex = subroutineTable[nextIdentifierCategory].push(entry) - 1
 							break
 							case STATIC:
 							case FIELD:
-								runningIndex = classTable[nextIdentifierCategory].push(token) - 1
+								runningIndex = classTable[nextIdentifierCategory].push(entry) - 1
 							break
 						}
 						if (process.env.DEBUG_SYMBOLIZED) console.log('Adding to tables:', classTable, subroutineTable)
@@ -104,7 +112,8 @@ function symbolize(chunk = [], encoding, callback) {
 			}
 			output = {
 				...output,
-				identifierCategory: nextIdentifierCategory,
+				kind: nextIdentifierCategory,
+				type: nextIdentifierType,
 			}
 
 			if (lines[i + 1].token !== ',') {
