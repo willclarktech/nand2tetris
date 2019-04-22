@@ -2,31 +2,31 @@ const assert = require('assert')
 
 const limitRegExp = module.exports.limitRegExp = regExp => new RegExp(`^${regExp}$`)
 
-const makeEater = module.exports.makeEater = parsed => ([{ category, token }, ...tokens] = [], expected) => {
+module.exports.makeEater = parsed => ([{ category, token }, ...tokens] = [], expected) => {
 	assert.ok(
 		limitRegExp(expected).test(token),
 		`Expected ${token} to match ${expected}`,
 	)
 
-	const line = `<${category}> ${token} </${category}>`
-	parsed.push(line)
-	if (process.env.DEBUG) console.log(parsed.length, line)
+	const obj = { category, token };
+	parsed.push(obj)
+	if (process.env.DEBUG) console.log(parsed.length, 'category:', category, 'token:', token)
 	return tokens
 }
 
-const makeNester = module.exports.makeNester = parsed => nesting => {
-	const line = `<${nesting}>`
-	parsed.push(line)
-	if (process.env.DEBUG) console.log(parsed.length, line)
+module.exports.makeNester = parsed => nesting => {
+	const obj = { category: 'nest', nesting: nesting }
+	parsed.push(obj)
+	if (process.env.DEBUG) console.log(parsed.length, 'category:', obj.category, 'nesting:', nesting)
 }
 
-const makeUnnester = module.exports.makeUnnester = parsed => nesting => {
-	const line = `</${nesting}>`
-	parsed.push(line)
-	if (process.env.DEBUG) console.log(parsed.length, line)
+module.exports.makeUnnester = parsed => nesting => {
+	const obj = { category: 'unnest', nesting: nesting }
+	parsed.push(obj)
+	if (process.env.DEBUG) console.log(parsed.length, 'category:', obj.category, 'nesting:', nesting)
 }
 
-const makeNestingCompiler = module.exports.makeNestingCompiler = (nest, unnest) => (nesting, compile) => tokens => {
+module.exports.makeNestingCompiler = (nest, unnest) => (nesting, compile) => tokens => {
 	nest(nesting)
 	tokens = compile(tokens)
 	unnest(nesting)
