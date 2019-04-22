@@ -28,8 +28,16 @@ const INDEXED_IDENTIFIERS = [VAR, ARGUMENT, STATIC, FIELD]
 
 function symbolize(chunk = [], encoding, callback) {
 	let j = 0;
-	let classTable
-	let subroutineTable
+	const symbolTable = {
+		classTable: {
+			static: [],
+			field: [],
+		},
+		subroutineTable: {
+			var: [],
+			argument: [],
+		},
+	}
 	let nextIdentifierCategory
 	let nextIdentifierType
 
@@ -40,13 +48,13 @@ function symbolize(chunk = [], encoding, callback) {
 		if (category === NEST) {
 			if (nesting === CLASS) {
 				if (process.env.DEBUG_SYMBOLIZED) console.log('Resetting symbol table for class')
-				classTable = {
+				symbolTable.classTable = {
 					static: [],
 					field: [],
 				}
 			} else if (nesting === SUBROUTINE_DEC) {
 				if (process.env.DEBUG_SYMBOLIZED) console.log('Resetting symbol table for subroutine')
-				subroutineTable = {
+				symbolTable.subroutineTable = {
 					var: [],
 					argument: [],
 				}
@@ -91,14 +99,14 @@ function symbolize(chunk = [], encoding, callback) {
 						switch(nextIdentifierCategory) {
 							case VAR:
 							case ARGUMENT:
-								runningIndex = subroutineTable[nextIdentifierCategory].push(entry) - 1
+								runningIndex = symbolTable.subroutineTable[nextIdentifierCategory].push(entry) - 1
 							break
 							case STATIC:
 							case FIELD:
-								runningIndex = classTable[nextIdentifierCategory].push(entry) - 1
+								runningIndex = symbolTable.classTable[nextIdentifierCategory].push(entry) - 1
 							break
 						}
-						if (process.env.DEBUG_SYMBOLIZED) console.log('Adding to tables:', classTable, subroutineTable)
+						if (process.env.DEBUG_SYMBOLIZED) console.log('Adding to tables:', symbolTable.classTable, symbolTable.subroutineTable)
 					}
 					output = runningIndex !== undefined
 						? {
@@ -120,10 +128,16 @@ function symbolize(chunk = [], encoding, callback) {
 				nextIdentifierCategory = undefined
 			}
 
-			return output
+			return {
+				output,
+				symbolTable: { ...symbolTable },
+			}
 		}
 
-		return line
+		return {
+			output: line,
+			symbolTable: { ...symbolTable },
+		}
 	})
 
 	callback(null, symbolized)
