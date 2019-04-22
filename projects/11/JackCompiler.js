@@ -6,14 +6,14 @@ const stream = require('stream')
 const tokenize = require('./lib/tokenize')
 const categorize = require('./lib/categorize')
 const parse = require('./lib/parse')
-const esc = require('./lib/esc')
+// const esc = require('./lib/esc')
 const symbolize = require('./lib/symbolize')
-const indent = require('./lib/indent')
+const generate = require('./lib/generate')
 const combine = require('./lib/combine')
 
 const JACK_SUFFIX = '.jack'
 
-const getOutputFileName = inputFile => `${inputFile.slice(0, -JACK_SUFFIX.length)}.out.xml`
+const getOutputFileName = inputFile => `${inputFile.slice(0, -JACK_SUFFIX.length)}.vm`
 
 const processFile = async (inputFile) => {
 	if (!inputFile.endsWith(JACK_SUFFIX)) {
@@ -32,7 +32,7 @@ const processFile = async (inputFile) => {
 		parse,
 		// esc,
 		symbolize,
-		// indent,
+		generate,
 		combine,
 	]
 		.map(transform => new stream.Transform({ transform, objectMode: true }))

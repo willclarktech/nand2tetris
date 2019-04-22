@@ -25,26 +25,26 @@ const IDENTIFIER_KEYWORDS = [CLASS, CONSTRUCTOR, FUNCTION, METHOD, STATIC, FIELD
 const SUBROUTINE_KEYWORDS = [CONSTRUCTOR, FUNCTION, METHOD]
 const INDEXED_IDENTIFIERS = [VAR, ARGUMENT, STATIC, FIELD]
 
-let j = 0;
 
 function symbolize(chunk = [], encoding, callback) {
+	let j = 0;
 	let classTable
 	let subroutineTable
 	let nextIdentifierCategory
 
 	const symbolized = chunk.map((line, i, lines) => {
-		if (process.env.DEBUG) console.log(++j, line)
+		if (process.env.DEBUG_SYMBOLIZED) console.log(++j, line)
 		const { category, nesting, token } = line
 
 		if (category === NEST) {
 			if (nesting === CLASS) {
-				if (process.env.DEBUG) console.log('Resetting symbol table for class')
+				if (process.env.DEBUG_SYMBOLIZED) console.log('Resetting symbol table for class')
 				classTable = {
 					static: [],
 					field: [],
 				}
 			} else if (nesting === SUBROUTINE_DEC) {
-				if (process.env.DEBUG) console.log('Resetting symbol table for subroutine')
+				if (process.env.DEBUG_SYMBOLIZED) console.log('Resetting symbol table for subroutine')
 				subroutineTable = {
 					var: [],
 					argument: [],
@@ -61,7 +61,7 @@ function symbolize(chunk = [], encoding, callback) {
 			nextIdentifierCategory = SUBROUTINE_KEYWORDS.includes(token)
 				? SUBROUTINE
 				: token
-			if (process.env.DEBUG) console.log('Setting next identifier category:', nextIdentifierCategory)
+			if (process.env.DEBUG_SYMBOLIZED) console.log('Setting next identifier category:', nextIdentifierCategory)
 		} else if (category === IDENTIFIER) {
 			const definedOrUsed = nextIdentifierCategory ? DEFINED : USED
 			let output = {
@@ -90,7 +90,7 @@ function symbolize(chunk = [], encoding, callback) {
 								runningIndex = classTable[nextIdentifierCategory].push(token) - 1
 							break
 						}
-						if (process.env.DEBUG) console.log('Adding to tables:', classTable, subroutineTable)
+						if (process.env.DEBUG_SYMBOLIZED) console.log('Adding to tables:', classTable, subroutineTable)
 					}
 					output = runningIndex !== undefined
 						? {
