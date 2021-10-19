@@ -1,6 +1,6 @@
 import {
-	symbols,
-	keywords,
+	Keyword,
+	Symbol,
 	singleLineCommentStart,
 	singleLineCommentEnd,
 	multiLineCommentStart,
@@ -112,7 +112,11 @@ const tokenizeRemainder = (remainder: string): readonly Token[] => {
 	if (!trimmed) {
 		return [];
 	}
-	if (symbols.includes(trimmed.slice(-1))) {
+	if (
+		Object.values(Symbol).some(
+			(symbol) => symbol.toString() === trimmed.slice(-1)
+		)
+	) {
 		return [
 			...tokenizeRemainder(trimmed.slice(0, -1)),
 			{
@@ -121,7 +125,9 @@ const tokenizeRemainder = (remainder: string): readonly Token[] => {
 			},
 		];
 	}
-	if (keywords.includes(trimmed)) {
+	if (
+		Object.values(Keyword).some((keyword) => keyword.toString() === trimmed)
+	) {
 		return [
 			{
 				type: TokenType.Keyword,
@@ -194,7 +200,11 @@ const tokenizeDefaultMode = (
 		};
 	}
 	// Did we reach a symbol?
-	if (symbols.includes(remainder.slice(-1))) {
+	if (
+		Object.values(Symbol).some(
+			(symbol) => symbol.toString() === remainder.slice(-1)
+		)
+	) {
 		return {
 			// Stay in no comment mode
 			mode: Mode.Default,
