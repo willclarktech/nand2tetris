@@ -1,6 +1,7 @@
 #!/usr/bin/env ts-node
 import { readFileSync } from "fs";
-import { tokenize } from "./lib";
+import { parse, tokenize } from "./lib";
+import { generate } from "./lib/generate";
 
 const main = (): void => {
 	if (process.argv.length < 3) {
@@ -11,12 +12,16 @@ const main = (): void => {
 	const contents = readFileSync(inputFile, "utf8");
 
 	const tokenized = tokenize(contents);
-	console.log("RESULT");
+	console.log("TOKENIZED");
 	console.log(tokenized);
-	console.log(tokenized.slice(100));
-	console.log(tokenized.slice(200));
-	console.log(tokenized.slice(300));
-	console.log(tokenized.slice(400));
+
+	const parsed = parse(tokenized);
+	console.log("PARSED");
+	console.log(JSON.stringify(parsed, undefined, 2));
+
+	const generated = generate(parsed);
+	console.log("GENERATED");
+	console.log(generated);
 
 	console.info("Done :)");
 	process.exit(0);

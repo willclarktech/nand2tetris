@@ -1,0 +1,123 @@
+import { Token, TokenType } from ".";
+import { Keyword } from "./consts";
+
+const enum AstType {
+	Node = "node",
+	Leaf = "leaf",
+}
+
+type AstLeaf = {
+	readonly type: AstType.Leaf;
+	readonly value: Token;
+};
+
+const enum AstNodeType {
+	Root = "root",
+	Class = "class",
+}
+
+interface AstNode {
+	readonly type: AstType.Node;
+	readonly nodeType: AstNodeType;
+	readonly children: readonly Ast[];
+}
+
+type Ast = AstNode | AstLeaf;
+
+interface Root extends AstNode {
+	readonly nodeType: AstNodeType.Root;
+}
+
+interface Class extends AstNode {
+	readonly nodeType: AstNodeType.Class;
+}
+
+interface Accumulator {
+	readonly root: AstNode;
+	readonly currentPath: readonly number[];
+}
+
+const emptyRoot: Root = {
+	type: AstType.Node,
+	nodeType: AstNodeType.Root,
+	children: [],
+};
+
+const updateRootNode = (node: AstNode, token: Token): AstNode => {
+	if (token.type === TokenType.Keyword && token.value === Keyword.Class) {
+		return {
+			type: AstType.Node,
+			nodeType: AstNodeType.Class,
+			children: [
+				...node.children,
+				{
+					type: AstType.Leaf,
+					value: token,
+				},
+			],
+		};
+	}
+	throw 123;
+};
+
+const updateNode = (
+	node: AstNode,
+	token: Token
+): { readonly node: AstNode; readonly newPath: readonly number[] } => {
+	switch (node.nodeType) {
+		case AstNodeType.Root:
+			throw 132;
+		// return updateRootNode(node, token);
+		default:
+			throw new Error("Not implemented");
+	}
+};
+
+const applyUpdate = (
+	currentNode: Ast,
+	currentPath: readonly number[],
+	token: Token
+): { readonly node: AstNode; readonly newPath: readonly number[] } => {
+	const [i, ...nextPath] = currentPath;
+	if (currentNode.type === AstType.Leaf) {
+		throw new Error("Cannot update a leaf");
+	}
+	if (i === undefined) {
+		return updateNode(currentNode, token);
+	}
+	if (currentNode.children.length < i - 1) {
+		throw new Error("No such child");
+	}
+	const { node: child, newPath } = applyUpdate(
+		currentNode.children[i],
+		nextPath,
+		token
+	);
+	return {
+		node: {
+			...currentNode,
+			[i]: child,
+		},
+		newPath: [...currentPath.slice(0, -1), ...newPath],
+	};
+};
+
+const reduceTokensToAst = (
+	accumulator: Accumulator,
+	token: Token
+): Accumulator => {
+	const { root: currentRoot, currentPath } = accumulator;
+	const { node, newPath } = applyUpdate(currentRoot, currentPath, token);
+	return {
+		root: node,
+		currentPath: newPath,
+	};
+};
+
+export const parse = (tokens: readonly Token[]): AstNode => {
+	const { root } = tokens.reduce<Accumulator>(reduceTokensToAst, {
+		root: emptyRoot,
+		currentPath: [],
+	});
+	return root;
+};

@@ -1,6 +1,6 @@
 import {
 	Keyword,
-	Symbol,
+	Symb,
 	singleLineCommentStart,
 	singleLineCommentEnd,
 	multiLineCommentStart,
@@ -113,7 +113,7 @@ const tokenizeRemainder = (remainder: string): readonly Token[] => {
 		return [];
 	}
 	if (
-		Object.values(Symbol).some(
+		Object.values(Symb).some(
 			(symbol) => symbol.toString() === trimmed.slice(-1)
 		)
 	) {
@@ -201,7 +201,7 @@ const tokenizeDefaultMode = (
 	}
 	// Did we reach a symbol?
 	if (
-		Object.values(Symbol).some(
+		Object.values(Symb).some(
 			(symbol) => symbol.toString() === remainder.slice(-1)
 		)
 	) {

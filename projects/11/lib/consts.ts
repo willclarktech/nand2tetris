@@ -6,7 +6,7 @@ export const stringDelimiter = '"';
 
 export const whitespaces = [" ", "\r", "\n"];
 
-export enum Symbol {
+export enum Symb {
 	OpenParenthesis = "(",
 	CloseParenthesis = ")",
 	OpenCurlyBracket = "{",
@@ -24,7 +24,7 @@ export enum Symbol {
 	GreaterThan = ">",
 	Plus = "+",
 	Minus = "-",
-	Asterix = "*",
+	Asterisk = "*",
 	ForwardSlash = "/",
 }
 
