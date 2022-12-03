@@ -1,30 +1,44 @@
 #!/usr/bin/env ts-node
-import { readFileSync } from "fs";
-import { parse, tokenize } from "./lib";
-import { generate } from "./lib/generate";
+import { readFile, readdir, writeFile } from "fs/promises";
+import { basename, dirname, join } from "path";
+import { addSymbols, generate, parse, tokenize } from "./lib";
 
-const main = (): void => {
-	if (process.argv.length < 3) {
-		console.info("Usage: JackCompiler.ts <FILE>");
-		process.exit(0);
-	}
-	const inputFile = process.argv[2];
-	const contents = readFileSync(inputFile, "utf8");
+const processFile = async (inputFile: string): Promise<void> => {
+	const dir = dirname(inputFile);
+	const base = basename(inputFile).replace(new RegExp(`${JACK_SUFFIX}$`), "");
+	const outputFile = join(dir, `${base}.vm`);
+	const contents = await readFile(inputFile, "utf8");
 
 	const tokenized = tokenize(contents);
-	console.log("TOKENIZED");
-	console.log(tokenized);
-
 	const parsed = parse(tokenized);
-	console.log("PARSED");
-	console.log(JSON.stringify(parsed, undefined, 2));
+	const withSymbols = addSymbols(parsed);
+	const generated = generate(withSymbols);
+	const data = generated.join("\n");
+	await writeFile(outputFile, `${data}\n`);
+};
 
-	const generated = generate(parsed);
-	console.log("GENERATED");
-	console.log(generated);
+const JACK_SUFFIX = ".jack";
+
+const main = async (): Promise<void> => {
+	if (process.argv.length !== 3) {
+		console.info("Usage: JackCompiler.ts <DIR|FILE>");
+		process.exit(0);
+	}
+	const input = process.argv[2];
+	const filesToProcess = input.endsWith(JACK_SUFFIX)
+		? [input]
+		: (await readdir(input))
+				.filter((f) => f.endsWith(JACK_SUFFIX))
+				.map((f) => join(input, f));
+	for (const file of filesToProcess) {
+		await processFile(file);
+	}
 
 	console.info("Done :)");
 	process.exit(0);
 };
 
-main();
+main().catch((error) => {
+	console.error(error);
+	process.exit(1);
+});

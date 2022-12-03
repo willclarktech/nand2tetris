@@ -1,12 +1,12 @@
 import { Keyword, Symb } from "./consts";
 import { Token, TokenType } from "./tokenize";
 
-const matchingBrackets: Readonly<
-	Record<
-		Symb.OpenCurlyBracket | Symb.OpenParenthesis | Symb.OpenSquareBracket,
-		Symb
-	>
-> = {
+type OpenBracket =
+	| Symb.OpenCurlyBracket
+	| Symb.OpenParenthesis
+	| Symb.OpenSquareBracket;
+
+const matchingBrackets: Readonly<Record<OpenBracket, Symb>> = {
 	[Symb.OpenCurlyBracket]: Symb.CloseCurlyBracket,
 	[Symb.OpenParenthesis]: Symb.CloseParenthesis,
 	[Symb.OpenSquareBracket]: Symb.CloseSquareBracket,
@@ -21,8 +21,8 @@ const findClosingIndex = (tokens: readonly Token[]): number => {
 				Symb.OpenCurlyBracket,
 				Symb.OpenParenthesis,
 				Symb.OpenSquareBracket,
-			] as readonly string[]
-		).includes(openingToken.value)
+			] as readonly OpenBracket[]
+		).includes(openingToken.value as OpenBracket)
 	) {
 		throw new Error(`Cannot find closing index for token: ${tokens[0]}`);
 	}
@@ -34,7 +34,7 @@ const findClosingIndex = (tokens: readonly Token[]): number => {
 			++depth;
 		} else if (
 			token.type === TokenType.Symbol &&
-			token.value === matchingBrackets[openingToken.value]
+			token.value === matchingBrackets[openingToken.value as OpenBracket]
 		) {
 			--depth;
 			if (depth === 0) {
@@ -46,7 +46,7 @@ const findClosingIndex = (tokens: readonly Token[]): number => {
 	return -1;
 };
 
-type UnaryOperator = Symb.Not | Symb.Minus;
+export type UnaryOperator = Symb.Not | Symb.Minus;
 
 interface UnaryOperatorToken extends Token {
 	readonly type: TokenType.Symbol;
@@ -59,7 +59,7 @@ const isUnaryOperatorToken = (token: Token): token is UnaryOperatorToken =>
 		.map((symbol) => symbol.toString())
 		.includes(token.value);
 
-type BinaryOperator =
+export type BinaryOperator =
 	| Symb.Equals
 	| Symb.And
 	| Symb.Or
@@ -91,19 +91,19 @@ const isBinaryOperatorToken = (token: Token): token is BinaryOperatorToken =>
 		.map((symbol) => symbol.toString())
 		.includes(token.value);
 
-interface ConstantExpression {
+export interface ConstantExpression {
 	readonly type: "expression";
 	readonly subtype: "constant";
 	readonly token: Token;
 }
 
-interface VariableExpression {
+export interface VariableExpression {
 	readonly type: "expression";
 	readonly subtype: "variable";
 	readonly token: Token;
 }
 
-interface FunctionCallExpression {
+export interface FunctionCallExpression {
 	readonly type: "expression";
 	readonly subtype: "functionCall";
 	readonly namespace: Token | null;
@@ -111,14 +111,14 @@ interface FunctionCallExpression {
 	readonly args: readonly Expression[];
 }
 
-interface UnaryOperatorExpression {
+export interface UnaryOperatorExpression {
 	readonly type: "expression";
 	readonly subtype: "unaryOperator";
 	readonly operator: UnaryOperator;
 	readonly subexpression: Expression;
 }
 
-interface BinaryOperatorExpression {
+export interface BinaryOperatorExpression {
 	readonly type: "expression";
 	readonly subtype: "binaryOperator";
 	readonly operator: BinaryOperator;
@@ -126,14 +126,14 @@ interface BinaryOperatorExpression {
 	readonly right: Expression;
 }
 
-interface ArrayElementAccessExpression {
+export interface ArrayElementAccessExpression {
 	readonly type: "expression";
 	readonly subtype: "arrayElementAccess";
 	readonly name: Token;
 	readonly index: Expression;
 }
 
-type Expression =
+export type Expression =
 	| ConstantExpression
 	| VariableExpression
 	| FunctionCallExpression
@@ -141,23 +141,23 @@ type Expression =
 	| BinaryOperatorExpression
 	| ArrayElementAccessExpression;
 
-interface DoStatement {
+export interface DoStatement {
 	readonly type: "doStatement";
 	readonly expression: FunctionCallExpression;
 }
 
-interface ReturnStatement {
+export interface ReturnStatement {
 	readonly type: "returnStatement";
 	readonly value: Expression | null;
 }
 
-interface VarStatement {
+export interface VarStatement {
 	readonly type: "varStatement";
 	readonly varNames: readonly Token[];
 	readonly varType: Token;
 }
 
-interface LetStatement {
+export interface LetStatement {
 	readonly type: "letStatement";
 	readonly target:
 		| {
@@ -166,81 +166,102 @@ interface LetStatement {
 		  }
 		| {
 				readonly type: "arrayElement";
-				readonly expression: Expression;
+				readonly expression: ArrayElementAccessExpression;
 		  };
 	readonly expression: Expression;
 }
 
-interface WhileStatement {
+export interface WhileStatement {
 	readonly type: "whileStatement";
 	readonly condition: Expression;
 	readonly body: readonly Statement[];
 }
 
-interface IfStatement {
+export interface IfStatement {
 	readonly type: "ifStatement";
 	readonly condition: Expression;
 	readonly body: readonly Statement[];
 }
 
-interface ElseStatement {
+export interface ElseStatement {
 	readonly type: "elseStatement";
 	readonly body: readonly Statement[];
 }
 
-type Statement =
+export interface IfElseStatement {
+	readonly type: "ifElseStatement";
+	readonly condition: Expression;
+	readonly ifBody: readonly Statement[];
+	readonly elseBody: readonly Statement[] | null;
+}
+
+export type Statement =
 	| DoStatement
 	| ReturnStatement
 	| VarStatement
 	| LetStatement
 	| WhileStatement
 	| IfStatement
-	| ElseStatement;
+	| ElseStatement
+	| IfElseStatement;
 
 type ReturnType = Token;
 type ParameterType = Token;
 
-interface Parameter {
+export interface Parameter {
 	readonly type: "parameter";
 	readonly name: string;
 	readonly parameterType: ParameterType;
 }
 
-enum RoutineType {
+export enum RoutineType {
 	Constructor = "constructor",
 	Function = "function",
 	Method = "method",
 }
 
-interface RoutineDeclaration {
+export interface RoutineDeclaration {
 	readonly type: "routineDeclaration";
 	readonly routineType: RoutineType;
 	readonly name: string;
 	readonly returnType: ReturnType;
 	readonly parameters: readonly Parameter[];
 	readonly body: readonly Statement[];
+	readonly symbols: readonly SymbolTableEntry[];
 }
 
-enum PropertySubtype {
-	Field = "field",
-	Static = "static",
-}
+type PropertySubtype = SymbolKind.Field | SymbolKind.Static;
 
-interface PropertyDeclaration {
+export interface PropertyDeclaration {
 	readonly type: "propertyDeclaration";
 	readonly subtype: PropertySubtype;
 	readonly propertyNames: readonly Token[];
 	readonly propertyType: Token;
 }
 
-type Declaration = PropertyDeclaration | RoutineDeclaration;
+export type Declaration = PropertyDeclaration | RoutineDeclaration;
 
 type ClassBody = readonly Declaration[];
+
+export enum SymbolKind {
+	Field = "field",
+	Static = "static",
+	Argument = "argument",
+	Local = "local",
+}
+
+export interface SymbolTableEntry {
+	readonly name: string;
+	readonly type: string;
+	readonly kind: SymbolKind;
+	readonly index: number;
+}
 
 interface Class {
 	readonly type: "class";
 	readonly name: string;
 	readonly body: ClassBody;
+	readonly symbols: readonly SymbolTableEntry[];
 }
 
 export type Ast = Class;
@@ -353,7 +374,6 @@ const findOutermostBinaryOperatorIndex = (tokens: readonly Token[]): number => {
 	let brackets: readonly string[] = [];
 	for (let i = 0; i < tokens.length; ++i) {
 		const token = tokens[i];
-		console.log("OPERATOR?", token, isBinaryOperatorToken(token));
 		if (
 			(
 				[Symb.OpenParenthesis, Symb.OpenSquareBracket] as readonly string[]
@@ -394,7 +414,6 @@ const parseBinaryOperatorExpression = (
 
 const parseExpression = (tokens: readonly Token[]): Expression => {
 	const trimmedTokens = trimParentheses(tokens);
-	console.log("TRIMMED", trimmedTokens);
 	const binaryOperatorIndex = findOutermostBinaryOperatorIndex(trimmedTokens);
 	if (binaryOperatorIndex !== -1) {
 		return parseBinaryOperatorExpression(trimmedTokens);
@@ -420,7 +439,6 @@ const parseExpression = (tokens: readonly Token[]): Expression => {
 	if (trimmedTokens[0].type === TokenType.Identifier) {
 		return parseVariableExpression(trimmedTokens);
 	}
-	console.log("EXPRESSION", tokens);
 	throw new Error("Could not parse expression");
 };
 
@@ -533,11 +551,17 @@ const parseLetStatement = (tokens: readonly Token[]): LetStatement => {
 	if (equalsIndex === -1) {
 		throw new Error("Could not parse let statement");
 	}
+	const targetExpression = parseExpression(tokens.slice(0, equalsIndex));
+	if (targetExpression.subtype !== "arrayElementAccess") {
+		throw new Error(
+			`Invalid array element access expression: ${targetExpression}`
+		);
+	}
 	const result = {
 		type: "letStatement" as const,
 		target: {
 			type: "arrayElement" as const,
-			expression: parseExpression(tokens.slice(0, equalsIndex)),
+			expression: targetExpression,
 		},
 		expression: parseExpression(tokens.slice(equalsIndex + 1)),
 	};
@@ -711,9 +735,12 @@ const splitFunctionParametersFromBody = (
 	return [parameters, body];
 };
 
-const routineTypes: Readonly<
-	Record<Keyword.Constructor | Keyword.Function | Keyword.Method, RoutineType>
-> = {
+type RoutineTypeKeyword =
+	| Keyword.Constructor
+	| Keyword.Function
+	| Keyword.Method;
+
+const routineTypes: Readonly<Record<RoutineTypeKeyword, RoutineType>> = {
 	[Keyword.Constructor]: RoutineType.Constructor,
 	[Keyword.Function]: RoutineType.Function,
 	[Keyword.Method]: RoutineType.Method,
@@ -722,7 +749,7 @@ const routineTypes: Readonly<
 const splitRoutineDeclaration = (
 	tokens: readonly Token[]
 ): readonly [RoutineType, Token, Token, readonly Token[], readonly Token[]] => {
-	const routineType = routineTypes[tokens[0].value];
+	const routineType = routineTypes[tokens[0].value as RoutineTypeKeyword];
 	const returnType = tokens[1];
 	const name = tokens[2];
 	const [parameters, body] = splitFunctionParametersFromBody(tokens.slice(3));
@@ -741,6 +768,7 @@ const parseRoutineDeclaration = (
 		returnType: returnType,
 		parameters: parseParameters(parameters),
 		body: parseBlock(body),
+		symbols: [],
 	};
 };
 
@@ -748,9 +776,7 @@ const parsePropertyDeclaration = (
 	tokens: readonly Token[]
 ): PropertyDeclaration => {
 	const propertySubtype =
-		tokens[0].value === Keyword.Static
-			? PropertySubtype.Static
-			: PropertySubtype.Field;
+		tokens[0].value === Keyword.Static ? SymbolKind.Static : SymbolKind.Field;
 	const propertyType = tokens[1];
 	const propertyNames = tokens
 		.slice(2)
@@ -827,7 +853,6 @@ const splitDeclarations = (
 
 const parseClassBody = (tokens: readonly Token[]): ClassBody => {
 	const declarations = splitDeclarations(tokens);
-	console.log(JSON.stringify(declarations.slice(-2), undefined, 1));
 	return declarations.map(parseDeclaration);
 };
 
@@ -845,10 +870,71 @@ const parseClass = (tokens: readonly Token[]): Class => {
 		type: "class",
 		name: name.value,
 		body: parseClassBody(body),
+		symbols: [],
 	};
 };
 
+const combineIfElseStatement = (
+	ifElseStatement: Statement,
+	elseStatement: ElseStatement
+): IfElseStatement => {
+	if (ifElseStatement.type !== "ifElseStatement") {
+		throw new Error(
+			`Cannot combine if/else statement with ${ifElseStatement.type}`
+		);
+	}
+	return {
+		...ifElseStatement,
+		elseBody: elseStatement.body.reduce(combineIfElseStatements, []),
+	};
+};
+
+const combineIfElseStatements = (
+	statements: readonly Statement[],
+	statement: Statement
+): readonly Statement[] => {
+	switch (statement.type) {
+		case "ifStatement":
+			return [
+				...statements,
+				{
+					type: "ifElseStatement",
+					condition: statement.condition,
+					ifBody: statement.body.reduce(combineIfElseStatements, []),
+					elseBody: null,
+				},
+			];
+		case "whileStatement":
+			return [
+				...statements,
+				{
+					...statement,
+					body: statement.body.reduce(combineIfElseStatements, []),
+				},
+			];
+		case "elseStatement":
+			return [
+				...statements.slice(0, -1),
+				combineIfElseStatement(statements[statements.length - 1], statement),
+			];
+		default:
+			return [...statements, statement];
+	}
+};
+
+const combineIfElse = (parsed: Ast): Ast => ({
+	...parsed,
+	body: parsed.body.map((declaration) =>
+		declaration.type === "propertyDeclaration"
+			? declaration
+			: {
+					...declaration,
+					body: declaration.body.reduce(combineIfElseStatements, []),
+			  }
+	),
+});
+
 export const parse = (tokens: readonly Token[]): Ast => {
 	const result = parseClass(tokens);
-	return result;
+	return combineIfElse(result);
 };

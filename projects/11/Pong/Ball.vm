@@ -1,0 +1,444 @@
+function Ball.new 0
+push constant 15
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push argument 1
+pop this 1
+push argument 2
+pop this 10
+push argument 3
+push constant 6
+sub
+pop this 11
+push argument 4
+pop this 12
+push argument 5
+push constant 6
+sub
+pop this 13
+push constant 0
+pop this 14
+push pointer 0
+call Ball.show 1
+pop temp 0
+push pointer 0
+return
+function Ball.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Ball.show 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push pointer 0
+call Ball.draw 1
+pop temp 0
+push constant 0
+return
+function Ball.hide 0
+push argument 0
+pop pointer 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push pointer 0
+call Ball.draw 1
+pop temp 0
+push constant 0
+return
+function Ball.draw 0
+push argument 0
+pop pointer 0
+push this 0
+push this 1
+push this 0
+push constant 5
+add
+push this 1
+push constant 5
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Ball.getLeft 0
+push argument 0
+pop pointer 0
+push this 0
+return
+function Ball.getRight 0
+push argument 0
+pop pointer 0
+push this 0
+push constant 5
+add
+return
+function Ball.setDestination 3
+push argument 0
+pop pointer 0
+push argument 1
+push this 0
+sub
+pop this 2
+push argument 2
+push this 1
+sub
+pop this 3
+push this 2
+call Math.abs 1
+pop local 0
+push this 3
+call Math.abs 1
+pop local 1
+push local 0
+push local 1
+lt
+pop this 7
+push this 7
+if-goto IF_TRUE59f823643a5130b2
+goto IF_FALSE59f823643a5130b2
+label IF_TRUE59f823643a5130b2
+push local 0
+pop local 2
+push local 1
+pop local 0
+push local 2
+pop local 1
+push this 1
+push argument 2
+lt
+pop this 8
+push this 0
+push argument 1
+lt
+pop this 9
+goto IF_END59f823643a5130b2
+label IF_FALSE59f823643a5130b2
+push this 0
+push argument 1
+lt
+pop this 8
+push this 1
+push argument 2
+lt
+pop this 9
+label IF_END59f823643a5130b2
+push constant 2
+push local 1
+call Math.multiply 2
+push local 0
+sub
+pop this 4
+push constant 2
+push local 1
+call Math.multiply 2
+pop this 5
+push constant 2
+push local 1
+push local 0
+sub
+call Math.multiply 2
+pop this 6
+push constant 0
+return
+function Ball.move 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Ball.hide 1
+pop temp 0
+push this 4
+push constant 0
+lt
+if-goto IF_TRUE3e7323e09f39c77c
+goto IF_FALSE3e7323e09f39c77c
+label IF_TRUE3e7323e09f39c77c
+push this 4
+push this 5
+add
+pop this 4
+goto IF_END3e7323e09f39c77c
+label IF_FALSE3e7323e09f39c77c
+push this 4
+push this 6
+add
+pop this 4
+push this 9
+if-goto IF_TRUEafbe6a1777ab0282
+goto IF_FALSEafbe6a1777ab0282
+label IF_TRUEafbe6a1777ab0282
+push this 7
+if-goto IF_TRUE82d8ba518998238f
+goto IF_FALSE82d8ba518998238f
+label IF_TRUE82d8ba518998238f
+push this 0
+push constant 4
+add
+pop this 0
+goto IF_END82d8ba518998238f
+label IF_FALSE82d8ba518998238f
+push this 1
+push constant 4
+add
+pop this 1
+label IF_END82d8ba518998238f
+goto IF_ENDafbe6a1777ab0282
+label IF_FALSEafbe6a1777ab0282
+push this 7
+if-goto IF_TRUE3b2f8dc0085c00f3
+goto IF_FALSE3b2f8dc0085c00f3
+label IF_TRUE3b2f8dc0085c00f3
+push this 0
+push constant 4
+sub
+pop this 0
+goto IF_END3b2f8dc0085c00f3
+label IF_FALSE3b2f8dc0085c00f3
+push this 1
+push constant 4
+sub
+pop this 1
+label IF_END3b2f8dc0085c00f3
+label IF_ENDafbe6a1777ab0282
+label IF_END3e7323e09f39c77c
+push this 8
+if-goto IF_TRUE5cfe2fb9f101d781
+goto IF_FALSE5cfe2fb9f101d781
+label IF_TRUE5cfe2fb9f101d781
+push this 7
+if-goto IF_TRUE2e4cf33c37eb4be7
+goto IF_FALSE2e4cf33c37eb4be7
+label IF_TRUE2e4cf33c37eb4be7
+push this 1
+push constant 4
+add
+pop this 1
+goto IF_END2e4cf33c37eb4be7
+label IF_FALSE2e4cf33c37eb4be7
+push this 0
+push constant 4
+add
+pop this 0
+label IF_END2e4cf33c37eb4be7
+goto IF_END5cfe2fb9f101d781
+label IF_FALSE5cfe2fb9f101d781
+push this 7
+if-goto IF_TRUE86866fb13fc5f69d
+goto IF_FALSE86866fb13fc5f69d
+label IF_TRUE86866fb13fc5f69d
+push this 1
+push constant 4
+sub
+pop this 1
+goto IF_END86866fb13fc5f69d
+label IF_FALSE86866fb13fc5f69d
+push this 0
+push constant 4
+sub
+pop this 0
+label IF_END86866fb13fc5f69d
+label IF_END5cfe2fb9f101d781
+push this 0
+push this 10
+gt
+not
+if-goto IF_TRUE0fa7cdb04550f3a4
+goto IF_FALSE0fa7cdb04550f3a4
+label IF_TRUE0fa7cdb04550f3a4
+push constant 1
+pop this 14
+push this 10
+pop this 0
+label IF_FALSE0fa7cdb04550f3a4
+push this 0
+push this 11
+lt
+not
+if-goto IF_TRUE33801991776db9a9
+goto IF_FALSE33801991776db9a9
+label IF_TRUE33801991776db9a9
+push constant 2
+pop this 14
+push this 11
+pop this 0
+label IF_FALSE33801991776db9a9
+push this 1
+push this 12
+gt
+not
+if-goto IF_TRUEe1cf437f3bef529e
+goto IF_FALSEe1cf437f3bef529e
+label IF_TRUEe1cf437f3bef529e
+push constant 3
+pop this 14
+push this 12
+pop this 1
+label IF_FALSEe1cf437f3bef529e
+push this 1
+push this 13
+lt
+not
+if-goto IF_TRUE1dd659fcdc5c0452
+goto IF_FALSE1dd659fcdc5c0452
+label IF_TRUE1dd659fcdc5c0452
+push constant 4
+pop this 14
+push this 13
+pop this 1
+label IF_FALSE1dd659fcdc5c0452
+push pointer 0
+call Ball.show 1
+pop temp 0
+push this 14
+return
+function Ball.bounce 5
+push argument 0
+pop pointer 0
+push this 2
+push constant 10
+call Math.divide 2
+pop local 2
+push this 3
+push constant 10
+call Math.divide 2
+pop local 3
+push argument 1
+push constant 0
+eq
+if-goto IF_TRUEe6cda22e5c978286
+goto IF_FALSEe6cda22e5c978286
+label IF_TRUEe6cda22e5c978286
+push constant 10
+pop local 4
+goto IF_ENDe6cda22e5c978286
+label IF_FALSEe6cda22e5c978286
+push this 2
+push constant 0
+lt
+not
+push argument 1
+push constant 1
+eq
+and
+push this 2
+push constant 0
+lt
+push argument 1
+push constant 1
+neg
+eq
+and
+or
+if-goto IF_TRUEa3aed6a28f7079e3
+goto IF_FALSEa3aed6a28f7079e3
+label IF_TRUEa3aed6a28f7079e3
+push constant 20
+pop local 4
+goto IF_ENDa3aed6a28f7079e3
+label IF_FALSEa3aed6a28f7079e3
+push constant 5
+pop local 4
+label IF_ENDa3aed6a28f7079e3
+label IF_ENDe6cda22e5c978286
+push this 14
+push constant 1
+eq
+if-goto IF_TRUEdd256598219892df
+goto IF_FALSEdd256598219892df
+label IF_TRUEdd256598219892df
+push constant 506
+pop local 0
+push local 3
+push constant 50
+neg
+call Math.multiply 2
+push local 2
+call Math.divide 2
+pop local 1
+push this 1
+push local 1
+push local 4
+call Math.multiply 2
+add
+pop local 1
+goto IF_ENDdd256598219892df
+label IF_FALSEdd256598219892df
+push this 14
+push constant 2
+eq
+if-goto IF_TRUEab4e941f132ce396
+goto IF_FALSEab4e941f132ce396
+label IF_TRUEab4e941f132ce396
+push constant 0
+pop local 0
+push local 3
+push constant 50
+call Math.multiply 2
+push local 2
+call Math.divide 2
+pop local 1
+push this 1
+push local 1
+push local 4
+call Math.multiply 2
+add
+pop local 1
+goto IF_ENDab4e941f132ce396
+label IF_FALSEab4e941f132ce396
+push this 14
+push constant 3
+eq
+if-goto IF_TRUEf909363974d360f6
+goto IF_FALSEf909363974d360f6
+label IF_TRUEf909363974d360f6
+push constant 250
+pop local 1
+push local 2
+push constant 25
+neg
+call Math.multiply 2
+push local 3
+call Math.divide 2
+pop local 0
+push this 0
+push local 0
+push local 4
+call Math.multiply 2
+add
+pop local 0
+goto IF_ENDf909363974d360f6
+label IF_FALSEf909363974d360f6
+push constant 0
+pop local 1
+push local 2
+push constant 25
+call Math.multiply 2
+push local 3
+call Math.divide 2
+pop local 0
+push this 0
+push local 0
+push local 4
+call Math.multiply 2
+add
+pop local 0
+label IF_ENDf909363974d360f6
+label IF_ENDab4e941f132ce396
+label IF_ENDdd256598219892df
+push pointer 0
+push local 0
+push local 1
+call Ball.setDestination 3
+pop temp 0
+push constant 0
+return
