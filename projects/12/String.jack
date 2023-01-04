@@ -11,54 +11,132 @@
  * string-oriented operations.
  */
 class String {
+    field Array a;
+    field int m;
+    field int l;
 
     /** constructs a new empty string with a maximum length of maxLength
      *  and initial length of 0. */
     constructor String new(int maxLength) {
+        let m = maxLength;
+        let a = Array.new(maxLength);
+        let l = 0;
+        return this;
     }
 
     /** Disposes this string. */
     method void dispose() {
+        do a.dispose();
+        return;
     }
 
     /** Returns the current length of this string. */
     method int length() {
+        return l;
     }
 
     /** Returns the character at the j-th location of this string. */
     method char charAt(int j) {
+        return a[j];
     }
 
     /** Sets the character at the j-th location of this string to c. */
     method void setCharAt(int j, char c) {
+        let a[j] = c;
+        return;
     }
 
     /** Appends c to this string's end and returns this string. */
     method String appendChar(char c) {
+        // TODO: Validate l is not at maxLength
+        let a[l] = c;
+        let l = l + 1;
+        return this;
     }
 
     /** Erases the last character from this string. */
     method void eraseLastChar() {
+        let l = l - 1;
+        return;
     }
 
-    /** Returns the integer value of this string, 
+    /** Returns the integer value of this string,
      *  until a non-digit character is detected. */
     method int intValue() {
+        var int i, v, sign;
+        let sign = 1;
+        let i = 0;
+        let v = 0;
+        if (a[0] = 45) {
+            let sign = -1;
+            let i = 1;
+        }
+        while (i < l & ((a[i] >= 48) & (a[i] <= 57))) {
+            let v = (v * 10) + (a[i] - 48);
+            let i = i + 1;
+        }
+        return v * sign;
     }
 
     /** Sets this string to hold a representation of the given value. */
     method void setInt(int val) {
+        var int i;
+        var bool isNegative;
+        let isNegative = false;
+        let i = 0;
+
+        if (val = 0) {
+            do appendChar("0");
+            let l = 1;
+            return;
+        }
+
+        if (val < 0) {
+            let isNegative = true;
+            let val = Math.abs(val);
+        }
+        while (val > 0) {
+            let a[i] = Math.mod(val, 10) + 48;
+            let val = val / 10;
+            let i = i + 1;
+        }
+        let l = i;
+        if (isNegative) {
+            do appendChar(45); // -
+        }
+        do reverse();
+        return;
+    }
+
+    method void reverse(String s) {
+        var Array arr;
+        var int start, end;
+        var char c;
+        let arr = s[0];
+        let start = 0;
+        let end = l - 1;
+        while (start < end) {
+            let c = arr[start];
+            let arr[start] = arr[end];
+            let arr[end] = c;
+            let start = start + 1;
+            let end = end - 1;
+        }
+        return;
     }
 
     /** Returns the new line character. */
     function char newLine() {
+        return 128;
     }
 
     /** Returns the backspace character. */
     function char backSpace() {
+        return 129;
     }
 
     /** Returns the double quote (") character. */
     function char doubleQuote() {
+        return 34;
     }
 }

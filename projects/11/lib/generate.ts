@@ -156,12 +156,15 @@ const generateConstantExpression = ({
 			return [
 				push("constant", token.value.length),
 				call("String", "new", 1),
-				...token.value
-					.split("")
-					.flatMap((char) => [
-						push("constant", char.charCodeAt(0)),
-						call("String", "appendChar", 2),
-					]),
+				pop("temp", 3),
+				push("temp", 3),
+				...token.value.split("").flatMap((char) => [
+					// TODO: Fix this bug
+					push("temp", 3),
+					push("constant", char.charCodeAt(0)),
+					call("String", "appendChar", 2),
+					pop("temp", 4),
+				]),
 			];
 		}
 		default:
@@ -363,6 +366,8 @@ const generateLetStatement = (
 					return [...generatedExpression, pop("this", symbol.index)];
 				}
 				case SymbolKind.Argument:
+					const index = symbol.index + Number(isMethodBody);
+					return [...generatedExpression, pop(symbol.kind, index)];
 				case SymbolKind.Local:
 				case SymbolKind.Static:
 					return [...generatedExpression, pop(symbol.kind, symbol.index)];
@@ -387,6 +392,7 @@ const generateLetStatement = (
 				push(
 					symbol.kind === SymbolKind.Field ? "this" : symbol.kind,
 					symbol.index
+					// symbol.index + Number(symbol.kind === SymbolKind.Argument)
 				),
 				add(),
 				...generateExpression(expression, symbols, className, isMethodBody),

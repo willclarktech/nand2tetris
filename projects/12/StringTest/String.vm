@@ -1,0 +1,281 @@
+function String.new 0
+push constant 3
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 1
+push argument 0
+call Array.new 1
+pop this 0
+push constant 0
+pop this 2
+push pointer 0
+return
+function String.dispose 0
+push argument 0
+pop pointer 0
+push this 0
+call Array.dispose 1
+pop temp 0
+push constant 0
+return
+function String.length 0
+push argument 0
+pop pointer 0
+push this 2
+return
+function String.charAt 0
+push argument 0
+pop pointer 0
+push argument 1
+push this 0
+add
+pop pointer 1
+push that 0
+return
+function String.setCharAt 0
+push argument 0
+pop pointer 0
+push argument 1
+push this 0
+add
+push argument 2
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+return
+function String.appendChar 0
+push argument 0
+pop pointer 0
+push this 2
+push this 0
+add
+push argument 1
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push this 2
+push constant 1
+add
+pop this 2
+push pointer 0
+return
+function String.eraseLastChar 0
+push argument 0
+pop pointer 0
+push this 2
+push constant 1
+sub
+pop this 2
+push constant 0
+return
+function String.intValue 3
+push argument 0
+pop pointer 0
+push constant 1
+pop local 2
+push constant 0
+pop local 0
+push constant 0
+pop local 1
+push constant 0
+push this 0
+add
+pop pointer 1
+push that 0
+push constant 45
+eq
+if-goto IF_TRUEeabb10e3c97caeae
+goto IF_FALSEeabb10e3c97caeae
+label IF_TRUEeabb10e3c97caeae
+push constant 1
+neg
+pop local 2
+push constant 1
+pop local 0
+label IF_FALSEeabb10e3c97caeae
+label WHILE_EXPed6b6a0990645b3d
+push local 0
+push this 2
+push local 0
+push this 0
+add
+pop pointer 1
+push that 0
+push constant 48
+push constant 1
+add
+gt
+push local 0
+push this 0
+add
+pop pointer 1
+push that 0
+push constant 57
+push constant 1
+sub
+lt
+and
+and
+lt
+not
+if-goto WHILE_ENDed6b6a0990645b3d
+push local 1
+push constant 10
+call Math.multiply 2
+push local 0
+push this 0
+add
+pop pointer 1
+push that 0
+add
+pop local 1
+goto WHILE_EXPed6b6a0990645b3d
+label WHILE_ENDed6b6a0990645b3d
+push local 1
+push local 2
+call Math.multiply 2
+return
+function String.setInt 2
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+push constant 1
+pop local 1
+push argument 1
+push constant 0
+lt
+if-goto IF_TRUEe257c15e2bf37a55
+goto IF_FALSEe257c15e2bf37a55
+label IF_TRUEe257c15e2bf37a55
+push constant 1
+neg
+pop local 1
+push argument 1
+push constant 1
+neg
+call Math.multiply 2
+pop argument 0
+label IF_FALSEe257c15e2bf37a55
+label WHILE_EXPed9519dbc8333f1f
+push argument 1
+push constant 0
+push constant 1
+add
+gt
+not
+if-goto WHILE_ENDed9519dbc8333f1f
+push local 0
+push this 0
+add
+push argument 1
+push constant 10
+call Math.mod 2
+push constant 48
+add
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push argument 1
+push constant 10
+call Math.divide 2
+pop argument 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXPed9519dbc8333f1f
+label WHILE_ENDed9519dbc8333f1f
+push local 0
+pop this 2
+push local 1
+push constant 1
+neg
+eq
+if-goto IF_TRUE32cb0aacc3d9d914
+goto IF_FALSE32cb0aacc3d9d914
+label IF_TRUE32cb0aacc3d9d914
+push pointer 0
+push constant 1
+call String.new 1
+pop temp 3
+push temp 3
+push temp 3
+push constant 45
+call String.appendChar 2
+pop temp 4
+call String.appendChar 2
+pop temp 0
+label IF_FALSE32cb0aacc3d9d914
+push pointer 0
+call String.reverse 1
+pop temp 0
+push constant 0
+return
+function String.reverse 3
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+push this 2
+push constant 1
+sub
+pop local 1
+label WHILE_EXPb1a698bdaf24b043
+push local 0
+push local 1
+lt
+not
+if-goto WHILE_ENDb1a698bdaf24b043
+push local 0
+push argument 0
+add
+pop pointer 1
+push that 0
+pop local 2
+push local 0
+push argument 0
+add
+push local 1
+push argument 0
+add
+pop pointer 1
+push that 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 1
+push argument 0
+add
+push local 2
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push constant 1
+add
+pop local 0
+push local 1
+push constant 1
+sub
+pop local 1
+goto WHILE_EXPb1a698bdaf24b043
+label WHILE_ENDb1a698bdaf24b043
+push constant 0
+return
+function String.newLine 0
+push constant 128
+return
+function String.backSpace 0
+push constant 129
+return
+function String.doubleQuote 0
+push constant 34
+return

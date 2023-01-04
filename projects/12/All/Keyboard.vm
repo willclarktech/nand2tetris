@@ -1,0 +1,69 @@
+function Keyboard.init 0
+push constant 0
+return
+function Keyboard.keyPressed 0
+push constant 24576
+call Memory.peek 1
+return
+function Keyboard.readChar 1
+push constant 0
+pop local 0
+label WHILE_EXPb62fb927033c4b36
+push local 0
+push constant 0
+eq
+not
+if-goto WHILE_ENDb62fb927033c4b36
+call Keyboard.keyPressed 0
+pop local 0
+goto WHILE_EXPb62fb927033c4b36
+label WHILE_ENDb62fb927033c4b36
+label WHILE_EXPaffd6fae76d05243
+push local 0
+call Keyboard.keyPressed 0
+eq
+not
+if-goto WHILE_ENDaffd6fae76d05243
+goto WHILE_EXPaffd6fae76d05243
+label WHILE_ENDaffd6fae76d05243
+push local 0
+call Output.printChar 1
+pop temp 0
+push local 0
+return
+function Keyboard.readLine 2
+push constant 128
+call String.new 1
+pop local 0
+push argument 0
+call Output.printString 1
+pop temp 0
+call Output.println 0
+pop temp 0
+label WHILE_EXP8d0cb81ce204be8c
+push local 1
+call String.newLine 0
+eq
+not
+not
+if-goto WHILE_END8d0cb81ce204be8c
+call Keyboard.readChar 0
+pop local 1
+push local 0
+push local 1
+call String.appendChar 2
+pop temp 0
+goto WHILE_EXP8d0cb81ce204be8c
+label WHILE_END8d0cb81ce204be8c
+push local 0
+call String.eraseLastChar 1
+pop temp 0
+push local 0
+return
+function Keyboard.readInt 1
+push argument 0
+call Keyboard.readLine 1
+pop local 0
+push local 0
+call String.intValue 1
+return

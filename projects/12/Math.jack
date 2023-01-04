@@ -11,37 +11,98 @@ class Math {
 
     /** Initializes the library. */
     function void init() {
+        return;
     }
 
     /** Returns the absolute value of x. */
     function int abs(int x) {
+        if (x < 0) {
+            return -x;
+        }
+        return x;
     }
 
-    /** Returns the product of x and y. 
-     *  When a Jack compiler detects the multiplication operator '*' in the 
+    /** Returns the product of x and y.
+     *  When a Jack compiler detects the multiplication operator '*' in the
      *  program's code, it handles it by invoking this method. In other words,
      *  the Jack expressions x*y and multiply(x,y) return the same value.
      */
     function int multiply(int x, int y) {
+        var int result;
+        var bool isNegative;
+        let isNegative = ((x < 0) & (y > 0)) | ((x > 0) & (y < 0));
+        let x = Math.abs(x);
+        let y = Math.abs(y);
+        let result = 0;
+        while (y > 0) {
+            let result = result + x;
+            let y = y - 1;
+        }
+        if (isNegative) {
+            return -result;
+        }
+        return result;
     }
 
     /** Returns the integer part of x/y.
-     *  When a Jack compiler detects the multiplication operator '/' in the 
+     *  When a Jack compiler detects the multiplication operator '/' in the
      *  program's code, it handles it by invoking this method. In other words,
      *  the Jack expressions x/y and divide(x,y) return the same value.
      */
     function int divide(int x, int y) {
+        var int result;
+        var bool isNegative;
+        let isNegative = ((x < 0) & (y > 0)) | ((x > 0) & (y < 0));
+        let x = Math.abs(x);
+        let y = Math.abs(y);
+        let result = 0;
+        while (x >= y) {
+            let result = result + 1;
+            let x = x - y;
+        }
+        if (isNegative) {
+            return -result;
+        }
+        return result;
+    }
+
+    function int mod(int n, int m) {
+        return n - ((n / m) * m);
+    }
+
+    function int pow(int n, int p) {
+        var int result;
+        let result = 1;
+        while (p > 0) {
+            let result = result * n;
+            let p = p - 1;
+        }
+        return result;
     }
 
     /** Returns the integer part of the square root of x. */
     function int sqrt(int x) {
+        var int n;
+        let n = 0;
+        while ((Math.pow(n, 2) < x) & (n < 181)) {
+            let n = n + 1;
+        }
+        return n;
     }
 
     /** Returns the greater number. */
     function int max(int a, int b) {
+        if (b > a) {
+            return b;
+        }
+        return a;
     }
 
     /** Returns the smaller number. */
     function int min(int a, int b) {
+        if (b < a) {
+            return b;
+        }
+        return a;
     }
 }

@@ -1,0 +1,135 @@
+function Math.init 0
+push constant 0
+return
+function Math.abs 0
+push argument 0
+push constant 0
+lt
+if-goto IF_TRUEc2fdf5f2976d9907
+goto IF_FALSEc2fdf5f2976d9907
+label IF_TRUEc2fdf5f2976d9907
+push argument 0
+neg
+return
+label IF_FALSEc2fdf5f2976d9907
+push argument 0
+return
+function Math.multiply 1
+push constant 0
+pop local 0
+label WHILE_EXPbd13a9e7e846d865
+push argument 1
+push constant 0
+gt
+not
+if-goto WHILE_ENDbd13a9e7e846d865
+push local 0
+push argument 0
+add
+pop local 0
+push argument 1
+push constant 1
+sub
+pop argument 1
+goto WHILE_EXPbd13a9e7e846d865
+label WHILE_ENDbd13a9e7e846d865
+push local 0
+return
+function Math.divide 1
+push constant 0
+pop local 0
+label WHILE_EXP508678ac62a4ccbb
+push argument 0
+push argument 1
+gt
+not
+if-goto WHILE_END508678ac62a4ccbb
+push local 0
+push constant 1
+add
+pop local 0
+push argument 0
+push argument 1
+sub
+pop argument 0
+goto WHILE_EXP508678ac62a4ccbb
+label WHILE_END508678ac62a4ccbb
+push local 0
+return
+function Math.mod 0
+push argument 0
+push argument 0
+push argument 1
+call Math.divide 2
+push argument 1
+call Math.multiply 2
+sub
+return
+function Math.pow 1
+push constant 1
+pop local 0
+label WHILE_EXPd855c82109d8e55a
+push argument 1
+push constant 0
+gt
+not
+if-goto WHILE_ENDd855c82109d8e55a
+push local 0
+push argument 0
+call Math.multiply 2
+pop local 0
+push argument 1
+push constant 1
+sub
+pop argument 1
+goto WHILE_EXPd855c82109d8e55a
+label WHILE_ENDd855c82109d8e55a
+push local 0
+return
+function Math.sqrt 0
+push constant 8
+call String.new 1
+push constant 66
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 100
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 115
+call String.appendChar 2
+push constant 113
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+call Output.println 1
+pop temp 0
+push constant 2
+return
+function Math.max 0
+push argument 1
+push argument 0
+gt
+if-goto IF_TRUE87cb720ea18ce3a3
+goto IF_FALSE87cb720ea18ce3a3
+label IF_TRUE87cb720ea18ce3a3
+push argument 1
+return
+label IF_FALSE87cb720ea18ce3a3
+push argument 0
+return
+function Math.min 0
+push argument 1
+push argument 0
+lt
+if-goto IF_TRUE7bb46f815be3d69c
+goto IF_FALSE7bb46f815be3d69c
+label IF_TRUE7bb46f815be3d69c
+push argument 1
+return
+label IF_FALSE7bb46f815be3d69c
+push argument 0
+return

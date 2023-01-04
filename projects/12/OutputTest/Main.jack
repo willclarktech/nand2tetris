@@ -9,11 +9,41 @@ class Main {
     /** Outputs the entire character set to the screen using all the
      *  methods of the Output class. */
     function void main() {
+        // do Memory.poke(24000, 1);
+        // do Memory.poke(24001, 2);
+        // do Memory.poke(24002, true);
+        // do Memory.poke(24003, true & 255);
+        // do Memory.poke(24004, true - 255);
+        // do Memory.poke(24005, true & (true - 255));
+        // do Memory.poke(24006, 1 * 256);
+        // do Memory.poke(24007, true * 256);
+        // do Memory.poke(24008, true & (true * 256));
+
+        // do Output.pokeMsb(24010, 1);
+        // do Output.pokeMsb(24011, 2);
+        // do Output.pokeMsb(24012, true);
+        // do Output.pokeMsb(24013, true & 255);
+        // do Output.pokeMsb(24014, true - 255);
+        // do Output.pokeMsb(24015, true & (true - 255));
+        // do Output.pokeMsb(24016, 1 * 256);
+        // do Output.pokeMsb(24017, true * 256);
+        // do Output.pokeMsb(24018, true & (true * 256));
+
+        // do Output.pokeLsb(24020, 1);
+        // do Output.pokeLsb(24021, 2);
+        // do Output.pokeLsb(24022, true);
+        // do Output.pokeLsb(24023, true & 255);
+        // do Output.pokeLsb(24024, true - 255);
+        // do Output.pokeLsb(24025, true & (true - 255));
+        // do Output.pokeLsb(24026, 1 * 256);
+        // do Output.pokeLsb(24027, true * 256);
+        // do Output.pokeLsb(24028, true & (true * 256));
+
         var String s;
-    
+
     	let s = String.new(1);
     	do s.appendChar(String.doubleQuote());
-    
+
         do Output.moveCursor(0, 63);
         do Output.printChar(66);
         do Output.moveCursor(22, 0);
@@ -21,22 +51,22 @@ class Main {
         do Output.moveCursor(22, 63);
         do Output.printChar(68);
         do Output.printChar(65);
-        
+
         do Output.moveCursor(2, 0);
         do Output.printString("0123456789");
         do Output.println();
-        
+
         do Output.printString("ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz");
         do Output.println();
-        
+
         do Output.printString("!#$%&'()*+,-./:;<=>?@[\]^_`{|}~");
         do Output.printString(s);
         do Output.println();
-        
+
         do Output.printInt(-12345);
         do Output.backSpace();
         do Output.printInt(6789);
-        
+
         return;
     }
 }
