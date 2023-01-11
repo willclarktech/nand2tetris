@@ -61,10 +61,13 @@ const isUnaryOperatorToken = (token: Token): token is UnaryOperatorToken =>
 
 export type BinaryOperator =
 	| Symb.Equals
+	| Symb.NotEquals
 	| Symb.And
 	| Symb.Or
 	| Symb.LessThan
+	| Symb.LessThanOrEqual
 	| Symb.GreaterThan
+	| Symb.GreaterThanOrEqual
 	| Symb.Plus
 	| Symb.Minus
 	| Symb.Asterisk
@@ -79,10 +82,13 @@ const isBinaryOperatorToken = (token: Token): token is BinaryOperatorToken =>
 	token.type === TokenType.Symbol &&
 	[
 		Symb.Equals,
+		Symb.NotEquals,
 		Symb.And,
 		Symb.Or,
 		Symb.LessThan,
+		Symb.LessThanOrEqual,
 		Symb.GreaterThan,
+		Symb.GreaterThanOrEqual,
 		Symb.Plus,
 		Symb.Minus,
 		Symb.Asterisk,

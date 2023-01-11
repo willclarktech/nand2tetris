@@ -117,11 +117,17 @@ const tokenizeRemainder = (remainder: string): readonly Token[] => {
 			(symbol) => symbol.toString() === trimmed.slice(-1)
 		)
 	) {
+		const isTwoCharacterSymbol = [
+			Symb.NotEquals,
+			Symb.GreaterThanOrEqual,
+			Symb.LessThanOrEqual,
+		].some((symbol) => remainder.endsWith(symbol.toString()));
+		const i = isTwoCharacterSymbol ? -2 : -1;
 		return [
-			...tokenizeRemainder(trimmed.slice(0, -1)),
+			...tokenizeRemainder(trimmed.slice(0, i)),
 			{
 				type: TokenType.Symbol,
-				value: trimmed.slice(-1),
+				value: trimmed.slice(i),
 			},
 		];
 	}
@@ -205,11 +211,26 @@ const tokenizeDefaultMode = (
 			(symbol) => symbol.toString() === remainder.slice(-1)
 		)
 	) {
+		const lastToken = tokens[tokens.length - 1] ?? null;
+		const isTwoCharacterSymbol =
+			remainder.endsWith(Symb.Equals) &&
+			lastToken !== null &&
+			[Symb.GreaterThan, Symb.LessThan].some(
+				(symbol) => symbol.toString() === lastToken.value
+			);
+		const newTokens = isTwoCharacterSymbol
+			? [
+					...tokens.slice(0, -1),
+					...tokenizeRemainder(
+						`${remainder.slice(0, -1)}${lastToken.value}${remainder.slice(-1)}`
+					),
+			  ]
+			: [...tokens, ...tokenizeRemainder(remainder)];
 		return {
 			// Stay in no comment mode
 			mode: Mode.Default,
 			// Tokenize everything we're currently remembering
-			tokens: [...tokens, ...tokenizeRemainder(remainder)],
+			tokens: newTokens,
 			// Remember the next character
 			remainder: char,
 		};

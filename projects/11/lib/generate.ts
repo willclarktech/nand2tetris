@@ -104,16 +104,21 @@ const generateArrayElementAccessExpression = (
 	];
 };
 
-const binaryOperatorToCode: Readonly<Record<BinaryOperator, string>> = {
-	[Symb.And]: and(),
-	[Symb.Asterisk]: call("Math", "multiply", 2),
-	[Symb.Equals]: eq(),
-	[Symb.ForwardSlash]: call("Math", "divide", 2),
-	[Symb.GreaterThan]: gt(),
-	[Symb.LessThan]: lt(),
-	[Symb.Minus]: sub(),
-	[Symb.Or]: or(),
-	[Symb.Plus]: add(),
+const binaryOperatorToCode: Readonly<
+	Record<BinaryOperator, readonly string[]>
+> = {
+	[Symb.And]: [and()],
+	[Symb.Asterisk]: [call("Math", "multiply", 2)],
+	[Symb.Equals]: [eq()],
+	[Symb.NotEquals]: [eq(), not()],
+	[Symb.ForwardSlash]: [call("Math", "divide", 2)],
+	[Symb.GreaterThan]: [gt()],
+	[Symb.LessThan]: [lt()],
+	[Symb.GreaterThanOrEqual]: [push("constant", 1), sub(), gt()],
+	[Symb.LessThanOrEqual]: [push("constant", 1), add(), lt()],
+	[Symb.Minus]: [sub()],
+	[Symb.Or]: [or()],
+	[Symb.Plus]: [add()],
 };
 
 const generateBinaryOperatorExpression = (
@@ -126,7 +131,7 @@ const generateBinaryOperatorExpression = (
 		generateExpression(e, symbols, className, isMethodBody)
 	);
 	const operation = binaryOperatorToCode[expression.operator];
-	return [...left, ...right, operation];
+	return [...left, ...right, ...operation];
 };
 
 const generateConstantExpression = ({
