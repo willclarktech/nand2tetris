@@ -17,14 +17,14 @@ return
 function Screen.clearScreen 1
 push static 0
 pop local 0
-label WHILE_EXP3c094883f2a5a888
+label WHILE_EXP0
 push local 0
 push static 0
 push static 4
 add
 lt
 not
-if-goto WHILE_END3c094883f2a5a888
+if-goto WHILE_END0
 push local 0
 push constant 0
 call Memory.poke 2
@@ -33,8 +33,8 @@ push local 0
 push constant 1
 add
 pop local 0
-goto WHILE_EXP3c094883f2a5a888
-label WHILE_END3c094883f2a5a888
+goto WHILE_EXP0
+label WHILE_END0
 push constant 0
 return
 function Screen.setColor 0
@@ -65,21 +65,21 @@ push local 0
 call Memory.peek 1
 pop local 3
 push static 5
-if-goto IF_TRUE77134f4beaf25e0f
-goto IF_FALSE77134f4beaf25e0f
-label IF_TRUE77134f4beaf25e0f
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
 push local 3
 push local 2
 or
 pop local 4
-goto IF_END77134f4beaf25e0f
-label IF_FALSE77134f4beaf25e0f
+goto IF_END0
+label IF_FALSE0
 push local 3
 push local 2
 not
 and
 pop local 4
-label IF_END77134f4beaf25e0f
+label IF_END0
 push local 0
 push local 4
 call Memory.poke 2
@@ -115,7 +115,7 @@ push constant 0
 pop local 5
 push constant 0
 pop local 6
-label WHILE_EXP64d06c061c078d52
+label WHILE_EXP0
 push local 4
 push local 2
 lt
@@ -124,37 +124,37 @@ push local 3
 lt
 or
 not
-if-goto WHILE_END64d06c061c078d52
+if-goto WHILE_END0
 push local 9
-if-goto IF_TRUEafafcb3098fc124f
-goto IF_FALSEafafcb3098fc124f
-label IF_TRUEafafcb3098fc124f
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
 push argument 0
 push local 4
 add
 pop local 7
-goto IF_ENDafafcb3098fc124f
-label IF_FALSEafafcb3098fc124f
+goto IF_END0
+label IF_FALSE0
 push argument 0
 push local 4
 sub
 pop local 7
-label IF_ENDafafcb3098fc124f
+label IF_END0
 push local 10
-if-goto IF_TRUEd9a758b7e05a954a
-goto IF_FALSEd9a758b7e05a954a
-label IF_TRUEd9a758b7e05a954a
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
 push argument 1
 push local 5
 add
 pop local 8
-goto IF_ENDd9a758b7e05a954a
-label IF_FALSEd9a758b7e05a954a
+goto IF_END1
+label IF_FALSE1
 push argument 1
 push local 5
 sub
 pop local 8
-label IF_ENDd9a758b7e05a954a
+label IF_END1
 push local 7
 push local 8
 call Screen.drawPixel 2
@@ -162,9 +162,9 @@ pop temp 0
 push local 6
 push constant 0
 lt
-if-goto IF_TRUE7f30df4c8f4d200f
-goto IF_FALSE7f30df4c8f4d200f
-label IF_TRUE7f30df4c8f4d200f
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
 push local 4
 push constant 1
 add
@@ -173,8 +173,8 @@ push local 6
 push local 3
 add
 pop local 6
-goto IF_END7f30df4c8f4d200f
-label IF_FALSE7f30df4c8f4d200f
+goto IF_END2
+label IF_FALSE2
 push local 5
 push constant 1
 add
@@ -183,9 +183,9 @@ push local 6
 push local 2
 sub
 pop local 6
-label IF_END7f30df4c8f4d200f
-goto WHILE_EXP64d06c061c078d52
-label WHILE_END64d06c061c078d52
+label IF_END2
+goto WHILE_EXP0
+label WHILE_END0
 push constant 0
 return
 function Screen.drawRectangle 1
@@ -199,18 +199,18 @@ push argument 3
 push constant 1
 add
 pop argument 3
-label WHILE_EXP474d23a5971a7815
+label WHILE_EXP0
 push argument 1
 push argument 3
 lt
 not
-if-goto WHILE_END474d23a5971a7815
-label WHILE_EXPc7d3aab832a83d2d
+if-goto WHILE_END0
+label WHILE_EXP1
 push argument 0
 push argument 2
 lt
 not
-if-goto WHILE_ENDc7d3aab832a83d2d
+if-goto WHILE_END1
 push argument 0
 push argument 1
 call Screen.drawPixel 2
@@ -219,16 +219,16 @@ push argument 0
 push constant 1
 add
 pop argument 0
-goto WHILE_EXPc7d3aab832a83d2d
-label WHILE_ENDc7d3aab832a83d2d
+goto WHILE_EXP1
+label WHILE_END1
 push local 0
 pop argument 0
 push argument 1
 push constant 1
 add
 pop argument 1
-goto WHILE_EXP474d23a5971a7815
-label WHILE_END474d23a5971a7815
+goto WHILE_EXP0
+label WHILE_END0
 push constant 0
 return
 function Screen.drawCircle 0

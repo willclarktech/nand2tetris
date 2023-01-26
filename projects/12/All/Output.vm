@@ -1474,12 +1474,12 @@ push argument 0
 push constant 126
 gt
 or
-if-goto IF_TRUE1369d7810f2aef7c
-goto IF_FALSE1369d7810f2aef7c
-label IF_TRUE1369d7810f2aef7c
+if-goto IF_TRUE997afe5593ef3301
+goto IF_FALSE997afe5593ef3301
+label IF_TRUE997afe5593ef3301
 push constant 0
 pop argument 0
-label IF_FALSE1369d7810f2aef7c
+label IF_FALSE997afe5593ef3301
 push argument 0
 push static 0
 add
@@ -1546,28 +1546,20 @@ call Math.divide 2
 add
 add
 return
-function Output.drawCursor 1
-call Output.cursorToAddress 0
-pop local 0
-push local 0
-push constant 2
-call Math.mod 2
-push constant 1
-eq
-if-goto IF_TRUE71d11ea30e6abb66
-goto IF_FALSE71d11ea30e6abb66
-label IF_TRUE71d11ea30e6abb66
-push local 0
-push argument 0
-call Output.pokeMsb 2
+function Output.drawCursor 0
+push constant 95
+call Output.addChar 1
 pop temp 0
-goto IF_END71d11ea30e6abb66
-label IF_FALSE71d11ea30e6abb66
-push local 0
-push argument 0
-call Output.pokeLsb 2
+call Output.flipChar 0
 pop temp 0
-label IF_END71d11ea30e6abb66
+push constant 0
+return
+function Output.clearCursor 0
+push constant 32
+call Output.addChar 1
+pop temp 0
+call Output.flipChar 0
+pop temp 0
 push constant 0
 return
 function Output.flipChar 6
@@ -1584,12 +1576,12 @@ call Output.cursorToAddress 0
 pop local 4
 push constant 0
 pop local 1
-label WHILE_EXP835cc0337dde666a
+label WHILE_EXP4bcc3a3d23513b24
 push local 1
 push constant 11
 lt
 not
-if-goto WHILE_END835cc0337dde666a
+if-goto WHILE_END4bcc3a3d23513b24
 push local 1
 push local 5
 add
@@ -1601,20 +1593,20 @@ push constant 2
 call Math.mod 2
 push constant 1
 eq
-if-goto IF_TRUEc4145d547b18fa12
-goto IF_FALSEc4145d547b18fa12
-label IF_TRUEc4145d547b18fa12
+if-goto IF_TRUE4bd0fb20bb919000
+goto IF_FALSE4bd0fb20bb919000
+label IF_TRUE4bd0fb20bb919000
 push local 4
 push local 2
 call Output.pokeMsb 2
 pop temp 0
-goto IF_ENDc4145d547b18fa12
-label IF_FALSEc4145d547b18fa12
+goto IF_END4bd0fb20bb919000
+label IF_FALSE4bd0fb20bb919000
 push local 4
 push local 2
 call Output.pokeLsb 2
 pop temp 0
-label IF_ENDc4145d547b18fa12
+label IF_END4bd0fb20bb919000
 push local 4
 push constant 32
 add
@@ -1623,8 +1615,8 @@ push local 1
 push constant 1
 add
 pop local 1
-goto WHILE_EXP835cc0337dde666a
-label WHILE_END835cc0337dde666a
+goto WHILE_EXP4bcc3a3d23513b24
+label WHILE_END4bcc3a3d23513b24
 push constant 0
 return
 function Output.addChar 0
@@ -1639,8 +1631,7 @@ pop that 0
 push constant 0
 return
 function Output.moveCursor 0
-push constant 0
-call Output.drawCursor 1
+call Output.clearCursor 0
 pop temp 0
 push argument 0
 push static 3
@@ -1648,9 +1639,7 @@ call Math.multiply 2
 push argument 1
 add
 pop static 4
-push constant 0
-not
-call Output.drawCursor 1
+call Output.drawCursor 0
 pop temp 0
 push constant 0
 return
@@ -1673,13 +1662,15 @@ pop temp 0
 push constant 0
 return
 function Output.printString 1
-label WHILE_EXP6e0c2a546717199a
+push constant 0
+pop local 0
+label WHILE_EXP83bbb4a48ebedfa6
 push local 0
 push argument 0
 call String.length 1
 lt
 not
-if-goto WHILE_END6e0c2a546717199a
+if-goto WHILE_END83bbb4a48ebedfa6
 push argument 0
 push local 0
 call String.charAt 2
@@ -1689,8 +1680,8 @@ push local 0
 push constant 1
 add
 pop local 0
-goto WHILE_EXP6e0c2a546717199a
-label WHILE_END6e0c2a546717199a
+goto WHILE_EXP83bbb4a48ebedfa6
+label WHILE_END83bbb4a48ebedfa6
 push constant 0
 return
 function Output.printInt 1
@@ -1707,8 +1698,7 @@ pop temp 0
 push constant 0
 return
 function Output.println 0
-push constant 0
-call Output.drawCursor 1
+call Output.clearCursor 0
 pop temp 0
 push static 4
 push static 3
@@ -1722,15 +1712,12 @@ push static 4
 push constant 1472
 call Math.mod 2
 pop static 4
-push constant 0
-not
-call Output.drawCursor 1
+call Output.drawCursor 0
 pop temp 0
 push constant 0
 return
 function Output.backSpace 0
-push constant 0
-call Output.drawCursor 1
+call Output.clearCursor 0
 pop temp 0
 push static 4
 push constant 1
@@ -1738,9 +1725,7 @@ sub
 push constant 1472
 call Math.mod 2
 pop static 4
-push constant 0
-not
-call Output.drawCursor 1
+call Output.drawCursor 0
 pop temp 0
 push constant 0
 return

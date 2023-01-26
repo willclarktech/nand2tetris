@@ -1,130 +1,6 @@
 function Main.main 5
 push constant 0
 pop local 4
-push constant 1
-call String.new 1
-pop temp 3
-push temp 3
-push temp 3
-push constant 49
-call String.appendChar 2
-pop temp 4
-call Output.printChar 1
-pop temp 0
-push constant 1
-call String.new 1
-pop temp 3
-push temp 3
-push temp 3
-push constant 50
-call String.appendChar 2
-pop temp 4
-call Output.printChar 1
-pop temp 0
-push constant 1
-call String.new 1
-pop temp 3
-push temp 3
-push temp 3
-push constant 51
-call String.appendChar 2
-pop temp 4
-call Output.printChar 1
-pop temp 0
-call Output.println 0
-pop temp 0
-push constant 10
-call String.new 1
-pop temp 3
-push temp 3
-push temp 3
-push constant 49
-call String.appendChar 2
-pop temp 4
-push temp 3
-push constant 50
-call String.appendChar 2
-pop temp 4
-push temp 3
-push constant 51
-call String.appendChar 2
-pop temp 4
-push temp 3
-push constant 52
-call String.appendChar 2
-pop temp 4
-push temp 3
-push constant 53
-call String.appendChar 2
-pop temp 4
-push temp 3
-push constant 54
-call String.appendChar 2
-pop temp 4
-push temp 3
-push constant 55
-call String.appendChar 2
-pop temp 4
-push temp 3
-push constant 56
-call String.appendChar 2
-pop temp 4
-push temp 3
-push constant 57
-call String.appendChar 2
-pop temp 4
-push temp 3
-push constant 48
-call String.appendChar 2
-pop temp 4
-call Output.printString 1
-pop temp 0
-call Output.println 0
-pop temp 0
-push constant 9
-call String.new 1
-pop temp 3
-push temp 3
-push temp 3
-push constant 65
-call String.appendChar 2
-pop temp 4
-push temp 3
-push constant 66
-call String.appendChar 2
-pop temp 4
-push temp 3
-push constant 67
-call String.appendChar 2
-pop temp 4
-push temp 3
-push constant 68
-call String.appendChar 2
-pop temp 4
-push temp 3
-push constant 69
-call String.appendChar 2
-pop temp 4
-push temp 3
-push constant 70
-call String.appendChar 2
-pop temp 4
-push temp 3
-push constant 71
-call String.appendChar 2
-pop temp 4
-push temp 3
-push constant 72
-call String.appendChar 2
-pop temp 4
-push temp 3
-push constant 73
-call String.appendChar 2
-pop temp 4
-call Output.printString 1
-pop temp 0
-call Output.println 0
-pop temp 0
 push constant 16
 call String.new 1
 pop temp 3
@@ -197,11 +73,11 @@ call Output.printString 1
 pop temp 0
 call Output.println 0
 pop temp 0
-label WHILE_EXPf8bef8fc141b7488
+label WHILE_EXPe34807fe970fcdfd
 push local 4
 not
 not
-if-goto WHILE_ENDf8bef8fc141b7488
+if-goto WHILE_ENDe34807fe970fcdfd
 push constant 32
 call String.new 1
 pop temp 3
@@ -336,37 +212,37 @@ call String.appendChar 2
 pop temp 4
 call Output.printString 1
 pop temp 0
-label WHILE_EXP12ae951944116cd3
+label WHILE_EXP4314c61d236c1433
 push local 1
 push constant 0
 eq
 not
-if-goto WHILE_END12ae951944116cd3
+if-goto WHILE_END4314c61d236c1433
 call Keyboard.keyPressed 0
 pop local 1
-goto WHILE_EXP12ae951944116cd3
-label WHILE_END12ae951944116cd3
+goto WHILE_EXP4314c61d236c1433
+label WHILE_END4314c61d236c1433
 push local 1
 pop local 0
-label WHILE_EXP11e25d5536f852ca
+label WHILE_EXP1c60e99b908a3ddc
 push local 1
 push constant 0
 eq
 not
 not
-if-goto WHILE_END11e25d5536f852ca
+if-goto WHILE_END1c60e99b908a3ddc
 call Keyboard.keyPressed 0
 pop local 1
-goto WHILE_EXP11e25d5536f852ca
-label WHILE_END11e25d5536f852ca
+goto WHILE_EXP1c60e99b908a3ddc
+label WHILE_END1c60e99b908a3ddc
 call Output.println 0
 pop temp 0
 push local 0
 push constant 137
 eq
-if-goto IF_TRUEba80ec3a7a068a0d
-goto IF_FALSEba80ec3a7a068a0d
-label IF_TRUEba80ec3a7a068a0d
+if-goto IF_TRUE549b560751dd47e8
+goto IF_FALSE549b560751dd47e8
+label IF_TRUE549b560751dd47e8
 push constant 2
 call String.new 1
 pop temp 3
@@ -386,9 +262,9 @@ pop temp 0
 push constant 0
 not
 pop local 4
-label IF_FALSEba80ec3a7a068a0d
-goto WHILE_EXPf8bef8fc141b7488
-label WHILE_ENDf8bef8fc141b7488
+label IF_FALSE549b560751dd47e8
+goto WHILE_EXPe34807fe970fcdfd
+label WHILE_ENDe34807fe970fcdfd
 push constant 0
 pop local 4
 push constant 14
@@ -699,11 +575,11 @@ call Output.printString 1
 pop temp 0
 call Output.println 0
 pop temp 0
-label WHILE_EXP7374e56e37e5a2fb
+label WHILE_EXP874afe30277a8d94
 push local 4
 not
 not
-if-goto WHILE_END7374e56e37e5a2fb
+if-goto WHILE_END874afe30277a8d94
 push constant 29
 call String.new 1
 pop temp 3
@@ -833,9 +709,9 @@ pop temp 0
 push local 0
 push constant 51
 eq
-if-goto IF_TRUE60ab03bd1d5eb949
-goto IF_FALSE60ab03bd1d5eb949
-label IF_TRUE60ab03bd1d5eb949
+if-goto IF_TRUE61dbb1576c2bcf65
+goto IF_FALSE61dbb1576c2bcf65
+label IF_TRUE61dbb1576c2bcf65
 push constant 2
 call String.new 1
 pop temp 3
@@ -855,9 +731,9 @@ pop temp 0
 push constant 0
 not
 pop local 4
-label IF_FALSE60ab03bd1d5eb949
-goto WHILE_EXP7374e56e37e5a2fb
-label WHILE_END7374e56e37e5a2fb
+label IF_FALSE61dbb1576c2bcf65
+goto WHILE_EXP874afe30277a8d94
+label WHILE_END874afe30277a8d94
 push constant 0
 pop local 4
 push constant 14
@@ -1084,11 +960,11 @@ call Output.printString 1
 pop temp 0
 call Output.println 0
 pop temp 0
-label WHILE_EXPfd332b41b12b6f17
+label WHILE_EXP9610ed624209c364
 push local 4
 not
 not
-if-goto WHILE_ENDfd332b41b12b6f17
+if-goto WHILE_END9610ed624209c364
 push constant 36
 call String.new 1
 pop temp 3
@@ -1243,9 +1119,9 @@ push local 2
 call String.length 1
 push constant 4
 eq
-if-goto IF_TRUE9f7add5655e3870f
-goto IF_FALSE9f7add5655e3870f
-label IF_TRUE9f7add5655e3870f
+if-goto IF_TRUE7965b80cb871c4c4
+goto IF_FALSE7965b80cb871c4c4
+label IF_TRUE7965b80cb871c4c4
 push local 2
 push constant 0
 call String.charAt 2
@@ -1269,9 +1145,9 @@ eq
 and
 and
 and
-if-goto IF_TRUEe2eb667b267feb1d
-goto IF_FALSEe2eb667b267feb1d
-label IF_TRUEe2eb667b267feb1d
+if-goto IF_TRUEfc646e8cf05d9104
+goto IF_FALSEfc646e8cf05d9104
+label IF_TRUEfc646e8cf05d9104
 push constant 2
 call String.new 1
 pop temp 3
@@ -1291,10 +1167,10 @@ pop temp 0
 push constant 0
 not
 pop local 4
-label IF_FALSEe2eb667b267feb1d
-label IF_FALSE9f7add5655e3870f
-goto WHILE_EXPfd332b41b12b6f17
-label WHILE_ENDfd332b41b12b6f17
+label IF_FALSEfc646e8cf05d9104
+label IF_FALSE7965b80cb871c4c4
+goto WHILE_EXP9610ed624209c364
+label WHILE_END9610ed624209c364
 push constant 0
 pop local 4
 push constant 13
@@ -1517,11 +1393,11 @@ call Output.printString 1
 pop temp 0
 call Output.println 0
 pop temp 0
-label WHILE_EXP4babf307b24fa096
+label WHILE_EXP7c453014dfc3279e
 push local 4
 not
 not
-if-goto WHILE_END4babf307b24fa096
+if-goto WHILE_END7c453014dfc3279e
 push constant 38
 call String.new 1
 pop temp 3
@@ -1684,9 +1560,9 @@ push local 3
 push constant 32123
 neg
 eq
-if-goto IF_TRUEca907c4f50c59898
-goto IF_FALSEca907c4f50c59898
-label IF_TRUEca907c4f50c59898
+if-goto IF_TRUEd167e01a159da648
+goto IF_FALSEd167e01a159da648
+label IF_TRUEd167e01a159da648
 push constant 2
 call String.new 1
 pop temp 3
@@ -1706,9 +1582,9 @@ pop temp 0
 push constant 0
 not
 pop local 4
-label IF_FALSEca907c4f50c59898
-goto WHILE_EXP4babf307b24fa096
-label WHILE_END4babf307b24fa096
+label IF_FALSEd167e01a159da648
+goto WHILE_EXP7c453014dfc3279e
+label WHILE_END7c453014dfc3279e
 call Output.println 0
 pop temp 0
 push constant 27

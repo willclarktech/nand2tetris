@@ -88,16 +88,16 @@ pop pointer 1
 push that 0
 push constant 45
 eq
-if-goto IF_TRUEeabb10e3c97caeae
-goto IF_FALSEeabb10e3c97caeae
-label IF_TRUEeabb10e3c97caeae
+if-goto IF_TRUE5854d11910a5d0de
+goto IF_FALSE5854d11910a5d0de
+label IF_TRUE5854d11910a5d0de
 push constant 1
 neg
 pop local 2
 push constant 1
 pop local 0
-label IF_FALSEeabb10e3c97caeae
-label WHILE_EXPed6b6a0990645b3d
+label IF_FALSE5854d11910a5d0de
+label WHILE_EXP6170103339af8e98
 push local 0
 push this 2
 push local 0
@@ -107,7 +107,7 @@ pop pointer 1
 push that 0
 push constant 48
 push constant 1
-add
+sub
 gt
 push local 0
 push this 0
@@ -116,13 +116,13 @@ pop pointer 1
 push that 0
 push constant 57
 push constant 1
-sub
+add
 lt
 and
 and
 lt
 not
-if-goto WHILE_ENDed6b6a0990645b3d
+if-goto WHILE_END6170103339af8e98
 push local 1
 push constant 10
 call Math.multiply 2
@@ -131,10 +131,16 @@ push this 0
 add
 pop pointer 1
 push that 0
+push constant 48
+sub
 add
 pop local 1
-goto WHILE_EXPed6b6a0990645b3d
-label WHILE_ENDed6b6a0990645b3d
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP6170103339af8e98
+label WHILE_END6170103339af8e98
 push local 1
 push local 2
 call Math.multiply 2
@@ -143,32 +149,50 @@ function String.setInt 2
 push argument 0
 pop pointer 0
 push constant 0
-pop local 0
-push constant 1
 pop local 1
+push constant 0
+pop local 0
+push argument 1
+push constant 0
+eq
+if-goto IF_TRUEc66dfe166256a9a6
+goto IF_FALSEc66dfe166256a9a6
+label IF_TRUEc66dfe166256a9a6
+push pointer 0
+push constant 1
+call String.new 1
+pop temp 3
+push temp 3
+push temp 3
+push constant 48
+call String.appendChar 2
+pop temp 4
+call String.appendChar 2
+pop temp 0
+push constant 1
+pop this 2
+push constant 0
+return
+label IF_FALSEc66dfe166256a9a6
 push argument 1
 push constant 0
 lt
-if-goto IF_TRUEe257c15e2bf37a55
-goto IF_FALSEe257c15e2bf37a55
-label IF_TRUEe257c15e2bf37a55
-push constant 1
-neg
+if-goto IF_TRUE35940da8edb57eed
+goto IF_FALSE35940da8edb57eed
+label IF_TRUE35940da8edb57eed
+push constant 0
+not
 pop local 1
 push argument 1
-push constant 1
-neg
-call Math.multiply 2
-pop argument 0
-label IF_FALSEe257c15e2bf37a55
-label WHILE_EXPed9519dbc8333f1f
+call Math.abs 1
+pop argument 1
+label IF_FALSE35940da8edb57eed
+label WHILE_EXP907892acb8cd439a
 push argument 1
 push constant 0
-push constant 1
-add
 gt
 not
-if-goto WHILE_ENDed9519dbc8333f1f
+if-goto WHILE_END907892acb8cd439a
 push local 0
 push this 0
 add
@@ -184,90 +208,86 @@ pop that 0
 push argument 1
 push constant 10
 call Math.divide 2
-pop argument 0
+pop argument 1
 push local 0
 push constant 1
 add
 pop local 0
-goto WHILE_EXPed9519dbc8333f1f
-label WHILE_ENDed9519dbc8333f1f
+goto WHILE_EXP907892acb8cd439a
+label WHILE_END907892acb8cd439a
 push local 0
 pop this 2
 push local 1
-push constant 1
-neg
-eq
-if-goto IF_TRUE32cb0aacc3d9d914
-goto IF_FALSE32cb0aacc3d9d914
-label IF_TRUE32cb0aacc3d9d914
+if-goto IF_TRUEa1be73b743b7f4de
+goto IF_FALSEa1be73b743b7f4de
+label IF_TRUEa1be73b743b7f4de
 push pointer 0
-push constant 1
-call String.new 1
-pop temp 3
-push temp 3
-push temp 3
 push constant 45
 call String.appendChar 2
-pop temp 4
-call String.appendChar 2
 pop temp 0
-label IF_FALSE32cb0aacc3d9d914
+label IF_FALSEa1be73b743b7f4de
 push pointer 0
 call String.reverse 1
 pop temp 0
 push constant 0
 return
-function String.reverse 3
+function String.reverse 4
 push argument 0
 pop pointer 0
 push constant 0
+push argument 0
+add
+pop pointer 1
+push that 0
 pop local 0
+push constant 0
+pop local 1
 push this 2
 push constant 1
 sub
-pop local 1
-label WHILE_EXPb1a698bdaf24b043
-push local 0
+pop local 2
+label WHILE_EXP42e821d2aa561a84
 push local 1
+push local 2
 lt
 not
-if-goto WHILE_ENDb1a698bdaf24b043
+if-goto WHILE_END42e821d2aa561a84
+push local 1
 push local 0
-push argument 0
 add
 pop pointer 1
 push that 0
-pop local 2
+pop local 3
+push local 1
 push local 0
-push argument 0
-add
-push local 1
-push argument 0
-add
-pop pointer 1
-push that 0
-pop temp 0
-pop pointer 1
-push temp 0
-pop that 0
-push local 1
-push argument 0
 add
 push local 2
+push local 0
+add
+pop pointer 1
+push that 0
 pop temp 0
 pop pointer 1
 push temp 0
 pop that 0
+push local 2
 push local 0
-push constant 1
 add
-pop local 0
+push local 3
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
 push local 1
 push constant 1
-sub
+add
 pop local 1
-goto WHILE_EXPb1a698bdaf24b043
-label WHILE_ENDb1a698bdaf24b043
+push local 2
+push constant 1
+sub
+pop local 2
+goto WHILE_EXP42e821d2aa561a84
+label WHILE_END42e821d2aa561a84
 push constant 0
 return
 function String.newLine 0

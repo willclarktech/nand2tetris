@@ -8,24 +8,46 @@ return
 function Keyboard.readChar 1
 push constant 0
 pop local 0
-label WHILE_EXPa74fcc955ef395c0
+label WHILE_EXP1a58b79503ff8e5e
 push local 0
 push constant 0
 eq
 not
-if-goto WHILE_ENDa74fcc955ef395c0
+if-goto WHILE_END1a58b79503ff8e5e
 call Keyboard.keyPressed 0
 pop local 0
-goto WHILE_EXPa74fcc955ef395c0
-label WHILE_ENDa74fcc955ef395c0
-label WHILE_EXP3fb6d13179f5454e
+goto WHILE_EXP1a58b79503ff8e5e
+label WHILE_END1a58b79503ff8e5e
+label WHILE_EXPfabcbf7a5839d9dc
 push local 0
 call Keyboard.keyPressed 0
 eq
 not
-if-goto WHILE_END3fb6d13179f5454e
-goto WHILE_EXP3fb6d13179f5454e
-label WHILE_END3fb6d13179f5454e
+if-goto WHILE_ENDfabcbf7a5839d9dc
+goto WHILE_EXPfabcbf7a5839d9dc
+label WHILE_ENDfabcbf7a5839d9dc
+push local 0
+call String.backSpace 0
+eq
+if-goto IF_TRUEd497655b73029f57
+goto IF_FALSEd497655b73029f57
+label IF_TRUEd497655b73029f57
+call Output.backSpace 0
+pop temp 0
+push local 0
+return
+label IF_FALSEd497655b73029f57
+push local 0
+call String.newLine 0
+eq
+if-goto IF_TRUE00ee38f6f82c972e
+goto IF_FALSE00ee38f6f82c972e
+label IF_TRUE00ee38f6f82c972e
+call Output.println 0
+pop temp 0
+push local 0
+return
+label IF_FALSE00ee38f6f82c972e
 push local 0
 call Output.printChar 1
 pop temp 0
@@ -38,23 +60,33 @@ pop local 0
 push argument 0
 call Output.printString 1
 pop temp 0
-call Output.println 0
-pop temp 0
-label WHILE_EXP69873eda20f478fa
+label WHILE_EXP5e4ab0fdc395bb23
 push local 1
 call String.newLine 0
 eq
 not
 not
-if-goto WHILE_END69873eda20f478fa
+if-goto WHILE_END5e4ab0fdc395bb23
 call Keyboard.readChar 0
 pop local 1
+push local 1
+call String.backSpace 0
+eq
+if-goto IF_TRUEc5154c4117910538
+goto IF_FALSEc5154c4117910538
+label IF_TRUEc5154c4117910538
+push local 0
+call String.eraseLastChar 1
+pop temp 0
+goto IF_ENDc5154c4117910538
+label IF_FALSEc5154c4117910538
 push local 0
 push local 1
 call String.appendChar 2
 pop temp 0
-goto WHILE_EXP69873eda20f478fa
-label WHILE_END69873eda20f478fa
+label IF_ENDc5154c4117910538
+goto WHILE_EXP5e4ab0fdc395bb23
+label WHILE_END5e4ab0fdc395bb23
 push local 0
 call String.eraseLastChar 1
 pop temp 0

@@ -16,59 +16,69 @@ pop temp 0
 push constant 0
 return
 function Sys.halt 0
-label WHILE_EXP02b24cc0fe91c689
+label WHILE_EXPa33ee7a42e428bea
 push constant 0
 not
 not
-if-goto WHILE_END02b24cc0fe91c689
-goto WHILE_EXP02b24cc0fe91c689
-label WHILE_END02b24cc0fe91c689
+if-goto WHILE_ENDa33ee7a42e428bea
+goto WHILE_EXPa33ee7a42e428bea
+label WHILE_ENDa33ee7a42e428bea
 push constant 0
 return
 function Sys.wait 3
-push constant 1000
+push constant 100
 pop local 0
 push constant 0
 pop local 1
-label WHILE_EXPa110a67f86f76b06
+label WHILE_EXP931443a938093b98
 push local 1
 push argument 0
 lt
 not
-if-goto WHILE_ENDa110a67f86f76b06
+if-goto WHILE_END931443a938093b98
 push constant 0
 pop local 2
-label WHILE_EXPfedad994b8d8abe7
+label WHILE_EXPe17db4e257112000
 push local 2
 push local 0
 lt
 not
-if-goto WHILE_ENDfedad994b8d8abe7
+if-goto WHILE_ENDe17db4e257112000
 push local 2
 push constant 1
 add
 pop local 2
-goto WHILE_EXPfedad994b8d8abe7
-label WHILE_ENDfedad994b8d8abe7
+goto WHILE_EXPe17db4e257112000
+label WHILE_ENDe17db4e257112000
 push local 1
 push constant 1
 add
 pop local 1
-goto WHILE_EXPa110a67f86f76b06
-label WHILE_ENDa110a67f86f76b06
+goto WHILE_EXP931443a938093b98
+label WHILE_END931443a938093b98
 push constant 0
 return
 function Sys.error 0
 push constant 4
 call String.new 1
+pop temp 3
+push temp 3
+push temp 3
 push constant 69
 call String.appendChar 2
+pop temp 4
+push temp 3
 push constant 82
 call String.appendChar 2
+pop temp 4
+push temp 3
 push constant 82
 call String.appendChar 2
+pop temp 4
+push temp 3
 push constant 60
 call String.appendChar 2
+pop temp 4
 call Output.printString 1
 pop temp 0
 push argument 0
@@ -76,8 +86,12 @@ call Output.printInt 1
 pop temp 0
 push constant 1
 call String.new 1
+pop temp 3
+push temp 3
+push temp 3
 push constant 62
 call String.appendChar 2
+pop temp 4
 call Output.printString 1
 pop temp 0
 call Sys.halt 0
