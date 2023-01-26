@@ -1,0 +1,197 @@
+function Math.init 0
+push constant 0
+return
+function Math.abs 0
+push argument 0
+push constant 0
+lt
+if-goto IF_TRUE346eb87c81b63cbd
+goto IF_FALSE346eb87c81b63cbd
+label IF_TRUE346eb87c81b63cbd
+push argument 0
+neg
+return
+label IF_FALSE346eb87c81b63cbd
+push argument 0
+return
+function Math.multiply 2
+push argument 0
+push constant 0
+lt
+push argument 1
+push constant 0
+gt
+and
+push argument 0
+push constant 0
+gt
+push argument 1
+push constant 0
+lt
+and
+or
+pop local 1
+push argument 0
+call Math.abs 1
+pop argument 0
+push argument 1
+call Math.abs 1
+pop argument 1
+push constant 0
+pop local 0
+label WHILE_EXPdc977d9e68ac165d
+push argument 1
+push constant 0
+gt
+not
+if-goto WHILE_ENDdc977d9e68ac165d
+push local 0
+push argument 0
+add
+pop local 0
+push argument 1
+push constant 1
+sub
+pop argument 1
+goto WHILE_EXPdc977d9e68ac165d
+label WHILE_ENDdc977d9e68ac165d
+push local 1
+if-goto IF_TRUEc5bf026103cbbc1f
+goto IF_FALSEc5bf026103cbbc1f
+label IF_TRUEc5bf026103cbbc1f
+push local 0
+neg
+return
+label IF_FALSEc5bf026103cbbc1f
+push local 0
+return
+function Math.divide 2
+push argument 0
+push constant 0
+lt
+push argument 1
+push constant 0
+gt
+and
+push argument 0
+push constant 0
+gt
+push argument 1
+push constant 0
+lt
+and
+or
+pop local 1
+push argument 0
+call Math.abs 1
+pop argument 0
+push argument 1
+call Math.abs 1
+pop argument 1
+push constant 0
+pop local 0
+label WHILE_EXPd6c2b63ad517d400
+push argument 0
+push argument 1
+push constant 1
+sub
+gt
+not
+if-goto WHILE_ENDd6c2b63ad517d400
+push local 0
+push constant 1
+add
+pop local 0
+push argument 0
+push argument 1
+sub
+pop argument 0
+goto WHILE_EXPd6c2b63ad517d400
+label WHILE_ENDd6c2b63ad517d400
+push local 1
+if-goto IF_TRUE2a8a90e88ee3ece9
+goto IF_FALSE2a8a90e88ee3ece9
+label IF_TRUE2a8a90e88ee3ece9
+push local 0
+neg
+return
+label IF_FALSE2a8a90e88ee3ece9
+push local 0
+return
+function Math.mod 0
+push argument 0
+push argument 0
+push argument 1
+call Math.divide 2
+push argument 1
+call Math.multiply 2
+sub
+return
+function Math.pow 1
+push constant 1
+pop local 0
+label WHILE_EXPb5204554c1c27ac8
+push argument 1
+push constant 0
+gt
+not
+if-goto WHILE_ENDb5204554c1c27ac8
+push local 0
+push argument 0
+call Math.multiply 2
+pop local 0
+push argument 1
+push constant 1
+sub
+pop argument 1
+goto WHILE_EXPb5204554c1c27ac8
+label WHILE_ENDb5204554c1c27ac8
+push local 0
+return
+function Math.sqrt 1
+push constant 0
+pop local 0
+label WHILE_EXP95d38130fa7ecf57
+push local 0
+push constant 2
+call Math.pow 2
+push argument 0
+lt
+push local 0
+push constant 181
+lt
+and
+not
+if-goto WHILE_END95d38130fa7ecf57
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP95d38130fa7ecf57
+label WHILE_END95d38130fa7ecf57
+push local 0
+return
+function Math.max 0
+push argument 1
+push argument 0
+gt
+if-goto IF_TRUE7c0bd554cdb89b24
+goto IF_FALSE7c0bd554cdb89b24
+label IF_TRUE7c0bd554cdb89b24
+push argument 1
+return
+label IF_FALSE7c0bd554cdb89b24
+push argument 0
+return
+function Math.min 0
+push argument 1
+push argument 0
+lt
+if-goto IF_TRUE52d894c9bb1f93e7
+goto IF_FALSE52d894c9bb1f93e7
+label IF_TRUE52d894c9bb1f93e7
+push argument 1
+return
+label IF_FALSE52d894c9bb1f93e7
+push argument 0
+return

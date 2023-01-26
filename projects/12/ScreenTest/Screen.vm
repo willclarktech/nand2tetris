@@ -1,0 +1,250 @@
+function Screen.init 0
+push constant 16384
+pop static 0
+push constant 256
+pop static 1
+push constant 512
+pop static 2
+push constant 16
+pop static 3
+push constant 8096
+pop static 4
+push constant 0
+not
+pop static 5
+push constant 0
+return
+function Screen.clearScreen 1
+push static 0
+pop local 0
+label WHILE_EXP3c094883f2a5a888
+push local 0
+push static 0
+push static 4
+add
+lt
+not
+if-goto WHILE_END3c094883f2a5a888
+push local 0
+push constant 0
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP3c094883f2a5a888
+label WHILE_END3c094883f2a5a888
+push constant 0
+return
+function Screen.setColor 0
+push argument 0
+pop static 5
+push constant 0
+return
+function Screen.drawPixel 5
+push static 0
+push argument 1
+push constant 32
+call Math.multiply 2
+push argument 0
+push constant 16
+call Math.divide 2
+add
+add
+pop local 0
+push argument 0
+push constant 16
+call Math.mod 2
+pop local 1
+push constant 2
+push local 1
+call Math.pow 2
+pop local 2
+push local 0
+call Memory.peek 1
+pop local 3
+push static 5
+if-goto IF_TRUE77134f4beaf25e0f
+goto IF_FALSE77134f4beaf25e0f
+label IF_TRUE77134f4beaf25e0f
+push local 3
+push local 2
+or
+pop local 4
+goto IF_END77134f4beaf25e0f
+label IF_FALSE77134f4beaf25e0f
+push local 3
+push local 2
+not
+and
+pop local 4
+label IF_END77134f4beaf25e0f
+push local 0
+push local 4
+call Memory.poke 2
+pop temp 0
+push constant 0
+return
+function Screen.drawLine 11
+push argument 2
+push argument 0
+sub
+pop local 0
+push argument 3
+push argument 1
+sub
+pop local 1
+push local 0
+push constant 0
+gt
+pop local 9
+push local 1
+push constant 0
+gt
+pop local 10
+push local 0
+call Math.abs 1
+pop local 2
+push local 1
+call Math.abs 1
+pop local 3
+push constant 0
+pop local 4
+push constant 0
+pop local 5
+push constant 0
+pop local 6
+label WHILE_EXP64d06c061c078d52
+push local 4
+push local 2
+lt
+push local 5
+push local 3
+lt
+or
+not
+if-goto WHILE_END64d06c061c078d52
+push local 9
+if-goto IF_TRUEafafcb3098fc124f
+goto IF_FALSEafafcb3098fc124f
+label IF_TRUEafafcb3098fc124f
+push argument 0
+push local 4
+add
+pop local 7
+goto IF_ENDafafcb3098fc124f
+label IF_FALSEafafcb3098fc124f
+push argument 0
+push local 4
+sub
+pop local 7
+label IF_ENDafafcb3098fc124f
+push local 10
+if-goto IF_TRUEd9a758b7e05a954a
+goto IF_FALSEd9a758b7e05a954a
+label IF_TRUEd9a758b7e05a954a
+push argument 1
+push local 5
+add
+pop local 8
+goto IF_ENDd9a758b7e05a954a
+label IF_FALSEd9a758b7e05a954a
+push argument 1
+push local 5
+sub
+pop local 8
+label IF_ENDd9a758b7e05a954a
+push local 7
+push local 8
+call Screen.drawPixel 2
+pop temp 0
+push local 6
+push constant 0
+lt
+if-goto IF_TRUE7f30df4c8f4d200f
+goto IF_FALSE7f30df4c8f4d200f
+label IF_TRUE7f30df4c8f4d200f
+push local 4
+push constant 1
+add
+pop local 4
+push local 6
+push local 3
+add
+pop local 6
+goto IF_END7f30df4c8f4d200f
+label IF_FALSE7f30df4c8f4d200f
+push local 5
+push constant 1
+add
+pop local 5
+push local 6
+push local 2
+sub
+pop local 6
+label IF_END7f30df4c8f4d200f
+goto WHILE_EXP64d06c061c078d52
+label WHILE_END64d06c061c078d52
+push constant 0
+return
+function Screen.drawRectangle 1
+push argument 0
+pop local 0
+push argument 2
+push constant 1
+add
+pop argument 2
+push argument 3
+push constant 1
+add
+pop argument 3
+label WHILE_EXP474d23a5971a7815
+push argument 1
+push argument 3
+lt
+not
+if-goto WHILE_END474d23a5971a7815
+label WHILE_EXPc7d3aab832a83d2d
+push argument 0
+push argument 2
+lt
+not
+if-goto WHILE_ENDc7d3aab832a83d2d
+push argument 0
+push argument 1
+call Screen.drawPixel 2
+pop temp 0
+push argument 0
+push constant 1
+add
+pop argument 0
+goto WHILE_EXPc7d3aab832a83d2d
+label WHILE_ENDc7d3aab832a83d2d
+push local 0
+pop argument 0
+push argument 1
+push constant 1
+add
+pop argument 1
+goto WHILE_EXP474d23a5971a7815
+label WHILE_END474d23a5971a7815
+push constant 0
+return
+function Screen.drawCircle 0
+push argument 0
+push argument 2
+sub
+push argument 1
+push argument 2
+sub
+push argument 0
+push argument 2
+add
+push argument 1
+push argument 2
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
